@@ -121,7 +121,7 @@
   @media (prefers-reduced-motion: reduce) {
     .ln-card, .ln-card.compact { transition: none; }
   }
-{
+:root {
   --notification-bg: #ffffff;
   --notification-border: #e2e8f0;
   --notification-text: #0f172a;
