@@ -1,0 +1,45 @@
+/* Financial Section - scoped and polished */
+.dashboard-container .kpi-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-bottom:18px }
+
+.dashboard-container .kpi-card{ background:var(--card-bg); padding:14px; border-radius:12px; border-left:4px solid var(--gray-100); display:flex; gap:12px; align-items:flex-start }
+.dashboard-container .kpi-card.revenue{ border-left-color:var(--green-600) }
+.dashboard-container .kpi-card.expenses{ border-left-color:#ef4444 }
+.dashboard-container .kpi-card.profit{ border-left-color:var(--green-700) }
+
+.dashboard-container .kpi-icon{ width:48px;height:48px;border-radius:8px;display:grid;place-items:center;flex-shrink:0 }
+.dashboard-container .kpi-card.revenue .kpi-icon{ background:var(--green-100); color:var(--green-700) }
+.dashboard-container .kpi-card.expenses .kpi-icon{ background:#fee2e2; color:#ef4444 }
+.dashboard-container .kpi-card.profit .kpi-icon{ background:var(--gray-50); color:var(--green-700) }
+
+.dashboard-container .kpi-content{ display:flex; flex-direction:column; gap:6px }
+.dashboard-container .kpi-label{ font-size:0.8rem; color:var(--gray-600); text-transform:uppercase; font-weight:700 }
+.dashboard-container .kpi-value{ font-size:1.5rem; font-weight:800; color:var(--gray-800) }
+.dashboard-container .kpi-change.positive{ color:var(--green-600); font-weight:700 }
+.dashboard-container .kpi-change.negative{ color:#ef4444; font-weight:700 }
+
+.dashboard-container .charts-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-bottom:18px }
+.dashboard-container .chart-card{ background:var(--card-bg); padding:14px; border-radius:12px; border:1px solid var(--gray-100) }
+.dashboard-container .chart-card h3{ margin:0 0 10px; font-size:1.05rem; font-weight:700; color:var(--gray-800) }
+.dashboard-container .chart-container{ width:100%; height:220px; display:flex; align-items:center; justify-content:center }
+
+.dashboard-container .transactions-section{ background:var(--card-bg); border-radius:12px; border:1px solid var(--gray-100); overflow:hidden }
+.dashboard-container .transactions-header{ display:flex; justify-content:space-between; align-items:center; padding:14px; border-bottom:1px solid var(--gray-100) }
+.dashboard-container .transactions-header h3{ margin:0; font-size:1.05rem; font-weight:700; color:var(--gray-800) }
+
+.dashboard-container .btn-export{ display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:8px; background:var(--gray-50); color:var(--gray-700); border:none; font-weight:700 }
+.dashboard-container .btn-export:hover{ background:var(--green-50); color:var(--green-700) }
+
+.dashboard-container .category-tag{ display:inline-block; padding:6px 10px; background:var(--gray-50); color:var(--green-600); border-radius:8px; font-weight:700 }
+
+.dashboard-container .type-badge.entrada{ background:var(--green-100); color:var(--green-700) }
+.dashboard-container .type-badge.saida{ background:#fee2e2; color:#7f1d1d }
+
+.dashboard-container .amount-cell{ font-weight:800 }
+.dashboard-container .amount-cell.entrada{ color:var(--green-600) }
+.dashboard-container .amount-cell.saida{ color:#ef4444 }
+
+.dashboard-container .status-badge.concluído{ background:var(--green-100); color:var(--green-700) }
+.dashboard-container .status-badge.pendente{ background:#fef3c7; color:#92400e }
+
+@media (max-width:1024px){ .dashboard-container .charts-grid{ grid-template-columns:1fr } .dashboard-container .kpi-grid{ grid-template-columns:repeat(2,1fr) } }
+@media (max-width:768px){ .dashboard-container .kpi-grid{ grid-template-columns:1fr } .dashboard-container .kpi-card{ flex-direction:column; align-items:center; text-align:center } .dashboard-container .btn-export{ width:100%; justify-content:center } .dashboard-container .chart-container{ height:180px } }

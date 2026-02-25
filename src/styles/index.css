@@ -1,0 +1,171 @@
+/* Moved from root index.css into styles folder */
+:root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Cores base */
+    --black-pure: #000000;
+    --black-soft: #0A0A0A;
+    --black-section: #111111;
+    --black-card: #1A1A1A;
+    --black-dark: #050505;
+    
+    /* Cores azuis */
+    --blue-primary: #0053A6;
+    --blue-dark: #003F7F;
+    --blue-light: #0A6CFF;
+    --blue-vibrant: #007AFF;
+    --blue-gradient: linear-gradient(135deg, #0053A6 0%, #0A6CFF 100%);
+    --blue-gradient-light: linear-gradient(135deg, rgba(0, 83, 166, 0.1) 0%, rgba(10, 108, 255, 0.1) 100%);
+    
+    /* Cores laranja */
+    --orange-primary: #FF6A00;
+    --orange-dark: #CC5500;
+    --orange-light: #FF8C42;
+    --orange-gradient: linear-gradient(135deg, #FF6A00 0%, #FF8C42 100%);
+    --orange-gradient-light: linear-gradient(135deg, rgba(255, 106, 0, 0.1) 0%, rgba(255, 140, 66, 0.1) 100%);
+    
+    /* Cores verdes */
+    --green-primary: #00A86B;
+    --green-dark: #008055;
+    --green-light: #00C853;
+    --green-gradient: linear-gradient(135deg, #00A86B 0%, #00C853 100%);
+    
+    /* Cores roxas */
+    --purple-primary: #6F42C1;
+    --purple-light: #9C27B0;
+    --purple-gradient: linear-gradient(135deg, #6F42C1 0%, #9C27B0 100%);
+    
+    /* Cores vermelhas/alertas */
+    --red-primary: #FF3B30;
+    --red-gradient: linear-gradient(135deg, #FF3B30 0%, #FF9500 100%);
+    
+    /* Cores amarelas */
+    --yellow-primary: #FFD700;
+    --yellow-gradient: linear-gradient(135deg, #FFD700 0%, #FF9500 100%);
+    
+    /* Cores neutras */
+    --white: #FFFFFF;
+    --white-soft: #F8F9FA;
+    --gray-light: #E9ECEF;
+    --gray-medium: #ADB5BD;
+    --gray-dark: #495057;
+    --gray-darker: #212529;
+    --gray-transparent: rgba(255, 255, 255, 0.1);
+    
+    /* Gradientes principais */
+    --gradient-main: linear-gradient(135deg, #FF6A00 0%, #0053A6 100%);
+    --gradient-dark: linear-gradient(135deg, #000000 0%, #0053A6 100%);
+    --gradient-light: linear-gradient(135deg, rgba(255, 106, 0, 0.1) 0%, rgba(0, 83, 166, 0.1) 100%);
+    --gradient-card: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+    --gradient-overlay: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+    
+    /* Sombras */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.4);
+    --shadow-xxl: 0 24px 64px rgba(0, 0, 0, 0.5);
+    --shadow-primary: 0 8px 32px rgba(255, 106, 0, 0.3);
+    --shadow-blue: 0 8px 32px rgba(0, 83, 166, 0.3);
+    --shadow-green: 0 8px 32px rgba(0, 168, 107, 0.3);
+    --shadow-purple: 0 8px 32px rgba(111, 66, 193, 0.3);
+    
+    /* Bordas */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --radius-3xl: 32px;
+    --radius-full: 50%;
+    
+    /* Layout */
+    --header-height: 80px;
+    --container-width: 1200px;
+    --container-padding: 24px;
+    --section-spacing: 120px;
+    --section-spacing-md: 80px;
+    --section-spacing-sm: 60px;
+    
+    /* Transições */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Z-index */
+    --z-background: -1;
+    --z-base: 1;
+    --z-overlay: 10;
+    --z-modal: 100;
+}
+
+a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+}
+
+a:hover {
+    color: #535bf2;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+}
+
+button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+button:hover {
+    border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        color: #213547;
+        background-color: #ffffff;
+    }
+
+    a:hover {
+        color: #747bff;
+    }
+
+    button {
+        background-color: #f9f9f9;
+    }
+}

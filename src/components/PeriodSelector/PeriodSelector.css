@@ -1,0 +1,49 @@
+.period-selector {
+    margin-bottom: 1.5rem;
+}
+
+.period-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-color-secondary);
+}
+
+.period-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.period-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--surface-border);
+    background: var(--surface-ground);
+    color: var(--text-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+}
+
+.period-button:hover {
+    background: var(--surface-hover);
+}
+
+.period-button.active {
+    background: var(--primary-color);
+    color: var(--primary-color-text);
+    border-color: var(--primary-color);
+}
+
+@media (max-width: 640px) {
+    .period-buttons {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .period-button {
+        width: 100%;
+        text-align: center;
+    }
+}

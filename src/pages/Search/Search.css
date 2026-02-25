@@ -1,0 +1,577 @@
+/* Search.css - Design Premium */
+
+/* ==========================================================================
+   VARIÁVEIS
+   ========================================================================== */
+.search-page {
+  --search-bg: #ffffff;
+  --search-border: #e2e8f0;
+  --search-text: #0f172a;
+  --search-text-light: #64748b;
+  --search-primary: #16a34a;
+  --search-primary-light: #dcfce7;
+  --search-primary-dark: #15803d;
+  --search-secondary: #3b82f6;
+  --search-secondary-light: #dbeafe;
+  --search-warning: #f59e0b;
+  --search-warning-light: #fef3c7;
+  --search-danger: #dc2626;
+  --search-danger-light: #fee2e2;
+  --search-success: #10b981;
+  --search-success-light: #d1fae5;
+  --search-gray-50: #f8fafc;
+  --search-gray-100: #f1f5f9;
+  --search-gray-200: #e2e8f0;
+  --search-gray-300: #cbd5e1;
+  --search-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --search-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --search-radius: 12px;
+  --search-radius-lg: 20px;
+  --search-radius-xl: 28px;
+  --search-transition: 200ms ease;
+  
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  padding: 20px;
+}
+
+/* Container */
+.search-page .search-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   HEADER DA BUSCA
+   ========================================================================== */
+
+.search-page .search-header {
+  margin-bottom: 40px;
+}
+
+.search-page .search-header-content {
+  background: var(--search-bg);
+  border-radius: var(--search-radius-xl);
+  padding: 32px;
+  box-shadow: var(--search-shadow-lg);
+  border: 1px solid var(--search-border);
+  text-align: center;
+}
+
+.search-page .search-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--search-text);
+  margin-bottom: 24px;
+  line-height: 1.2;
+  background: linear-gradient(135deg, var(--search-primary), var(--search-primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.search-page .search-query-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: var(--search-gray-50);
+  border: 1px solid var(--search-gray-200);
+  border-radius: var(--search-radius-lg);
+  margin-bottom: 16px;
+}
+
+.search-page .search-query-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--search-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.search-page .search-query-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--search-text);
+  padding: 4px 12px;
+  background: white;
+  border-radius: var(--search-radius);
+  border: 1px solid var(--search-gray-300);
+  min-width: 200px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-page .search-results-count {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--search-primary);
+  padding: 8px 16px;
+  background: var(--search-primary-light);
+  border-radius: 20px;
+  display: inline-block;
+  border: 1px solid var(--search-primary);
+}
+
+/* ==========================================================================
+   CONTEÚDO DA BUSCA
+   ========================================================================== */
+
+.search-page .search-content {
+  min-height: 400px;
+}
+
+/* ==========================================================================
+   ESTADO VAZIO
+   ========================================================================== */
+
+.search-page .search-empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--search-bg);
+  border-radius: var(--search-radius-xl);
+  box-shadow: var(--search-shadow-lg);
+  border: 1px solid var(--search-border);
+}
+
+.search-page .search-empty-icon {
+  margin-bottom: 24px;
+}
+
+.search-page .search-empty-icon svg {
+  color: var(--search-gray-300);
+}
+
+.search-page .search-empty-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--search-text);
+  margin-bottom: 12px;
+}
+
+.search-page .search-empty-description {
+  font-size: 16px;
+  color: var(--search-text-light);
+  max-width: 400px;
+  margin: 0 auto 32px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   NENHUM RESULTADO
+   ========================================================================== */
+
+.search-page .search-no-results {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--search-bg);
+  border-radius: var(--search-radius-xl);
+  box-shadow: var(--search-shadow-lg);
+  border: 1px solid var(--search-border);
+}
+
+.search-page .search-no-results-icon {
+  margin-bottom: 24px;
+}
+
+.search-page .search-no-results-icon svg {
+  color: var(--search-danger);
+}
+
+.search-page .search-no-results-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--search-text);
+  margin-bottom: 32px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.3;
+}
+
+.search-page .search-suggestions {
+  background: var(--search-gray-50);
+  border: 1px solid var(--search-gray-200);
+  border-radius: var(--search-radius);
+  padding: 24px;
+  max-width: 500px;
+  margin: 0 auto 32px;
+  text-align: left;
+}
+
+.search-page .search-suggestions-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--search-text);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.search-page .search-suggestions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.search-page .search-suggestion-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--search-text-light);
+  line-height: 1.5;
+}
+
+.search-page .suggestion-bullet {
+  color: var(--search-primary);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: -2px;
+}
+
+/* ==========================================================================
+   BOTÃO HOME
+   ========================================================================== */
+
+.search-page .search-home-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px;
+  background: var(--search-primary);
+  color: white;
+  border: 1px solid var(--search-primary);
+  border-radius: var(--search-radius);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--search-transition);
+}
+
+.search-page .search-home-button:hover {
+  background: var(--search-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.2);
+}
+
+/* ==========================================================================
+   GRADE DE RESULTADOS
+   ========================================================================== */
+
+.search-page .search-results-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .search-page .search-results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .search-page .search-results-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ==========================================================================
+   CARD DE RESULTADO
+   ========================================================================== */
+
+.search-page .search-result-card {
+  background: var(--search-bg);
+  border-radius: var(--search-radius-lg);
+  padding: 24px;
+  box-shadow: var(--search-shadow);
+  border: 1px solid var(--search-border);
+  transition: all var(--search-transition);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.search-page .search-result-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--search-shadow-lg);
+  border-color: var(--search-primary);
+}
+
+.search-page .search-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.search-page .search-result-title {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.search-page .search-result-link {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--search-text);
+  text-decoration: none;
+  transition: color var(--search-transition);
+  display: block;
+  line-height: 1.3;
+}
+
+.search-page .search-result-link:hover {
+  color: var(--search-primary);
+}
+
+.search-page .search-result-badge {
+  padding: 4px 10px;
+  background: var(--search-primary-light);
+  color: var(--search-primary);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--search-primary);
+  flex-shrink: 0;
+}
+
+/* Excerpt */
+.search-page .search-result-excerpt {
+  font-size: 14px;
+  color: var(--search-text-light);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* Keywords */
+.search-page .search-result-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.search-page .search-keyword-tag {
+  padding: 4px 10px;
+  background: var(--search-gray-100);
+  color: var(--search-text-light);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--search-gray-200);
+  transition: all var(--search-transition);
+}
+
+.search-page .search-keyword-tag:hover {
+  background: var(--search-primary-light);
+  color: var(--search-primary);
+  border-color: var(--search-primary);
+  transform: translateY(-1px);
+}
+
+/* Footer */
+.search-page .search-result-footer {
+  border-top: 1px solid var(--search-gray-100);
+  padding-top: 16px;
+  margin-top: auto;
+}
+
+.search-page .search-result-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  color: var(--search-primary);
+  font-weight: 600;
+  font-size: 14px;
+  transition: all var(--search-transition);
+  padding: 8px 0;
+}
+
+.search-page .search-result-action:hover {
+  color: var(--search-primary-dark);
+}
+
+.search-page .search-result-action svg {
+  transition: transform var(--search-transition);
+}
+
+.search-page .search-result-action:hover svg {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   ACESSIBILIDADE
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .search-page * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.search-page :focus-visible {
+  outline: 2px solid var(--search-primary);
+  outline-offset: 2px;
+  border-radius: var(--search-radius);
+}
+
+.search-page a:focus-visible {
+  outline: 2px solid var(--search-primary);
+  outline-offset: 2px;
+  border-radius: var(--search-radius);
+}
+
+/* ==========================================================================
+   ANIMAÇÕES
+   ========================================================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-page .search-result-card {
+  animation: fadeIn 0.3s ease-out forwards;
+  animation-delay: calc(var(--index, 0) * 0.1s);
+  opacity: 0;
+}
+
+.search-page .search-empty-state,
+.search-page .search-no-results {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* ==========================================================================
+   PAGINAÇÃO (se necessário no futuro)
+   ========================================================================== */
+.search-page .search-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--search-gray-200);
+}
+
+.search-page .search-pagination-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--search-radius);
+  border: 1px solid var(--search-gray-200);
+  background: white;
+  color: var(--search-text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--search-transition);
+}
+
+.search-page .search-pagination-button:hover:not(:disabled) {
+  background: var(--search-gray-100);
+  border-color: var(--search-gray-300);
+}
+
+.search-page .search-pagination-button.active {
+  background: var(--search-primary);
+  color: white;
+  border-color: var(--search-primary);
+}
+
+.search-page .search-pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.search-page .search-pagination-prev,
+.search-page .search-pagination-next {
+  padding: 8px 16px;
+  min-width: 100px;
+}
+
+/* ==========================================================================
+   LOADING STATE (se necessário no futuro)
+   ========================================================================== */
+.search-page .search-loading {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.search-page .search-loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--search-gray-200);
+  border-top-color: var(--search-primary);
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  animation: spin 1s linear infinite;
+}
+
+.search-page .search-loading-text {
+  font-size: 16px;
+  color: var(--search-text-light);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   MOBILE OPTIMIZATIONS
+   ========================================================================== */
+@media (max-width: 768px) {
+  .search-page {
+    padding: 16px;
+  }
+  
+  .search-page .search-header-content {
+    padding: 24px 16px;
+  }
+  
+  .search-page .search-title {
+    font-size: 24px;
+  }
+  
+  .search-page .search-query-wrapper {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  
+  .search-page .search-query-value {
+    min-width: auto;
+    width: 100%;
+  }
+  
+  .search-page .search-results-grid {
+    gap: 16px;
+  }
+  
+  .search-page .search-result-card {
+    padding: 20px;
+  }
+}
+

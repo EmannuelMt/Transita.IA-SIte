@@ -1,0 +1,12 @@
+/* Employees Section - scoped and polished */
+.dashboard-container .department-tag{ display:inline-block; padding:6px 10px; background:var(--gray-50); color:var(--green-600); border-radius:8px; font-weight:700; font-size:0.85rem }
+.dashboard-container .salary-cell{ font-weight:700; color:var(--green-600) }
+
+/* Reuse shared table and controls from DriversSection (they are scoped to dashboard) */
+
+/* smaller tweaks */
+.dashboard-container .employees-grid{ display:grid; grid-template-columns:1fr; gap:12px }
+
+@media (min-width:900px){
+  .dashboard-container .employees-grid{ grid-template-columns: 1fr 320px }
+}

@@ -1,0 +1,45 @@
+.dashboard-container .company-about{ display:flex; flex-direction:column; gap:20px; padding:6px 0 }
+
+.dashboard-container .company-hero{ display:flex; gap:24px; align-items:center; justify-content:space-between; padding:20px; background:var(--card-bg); border-radius:12px; border:1px solid var(--gray-100) }
+.dashboard-container .company-hero .hero-content{ max-width:860px }
+.dashboard-container .company-hero h1{ margin:0; font-size:1.5rem; color:var(--gray-800) }
+.dashboard-container .company-hero .lead{ margin:8px 0 0; color:var(--gray-600); font-size:1rem }
+.dashboard-container .hero-cta{ margin-top:14px; display:flex; gap:10px }
+.dashboard-container .btn-primary{ padding:10px 14px; border-radius:10px; background:linear-gradient(90deg,var(--green-600),var(--green-500)); color:var(--white); text-decoration:none; display:inline-block }
+.dashboard-container .btn-outline{ padding:10px 14px; border-radius:10px; border:1px solid var(--gray-200); color:var(--gray-800); background:transparent; text-decoration:none }
+
+.dashboard-container .hero-visual{ min-width:120px; display:flex; align-items:center; justify-content:center }
+.dashboard-container .hero-visual .badge{ padding:10px 14px; border-radius:10px; background:var(--green-50); color:var(--green-700); font-weight:800 }
+
+.dashboard-container .company-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px }
+.dashboard-container .company-card{ display:flex; gap:12px; align-items:flex-start; padding:14px; background:var(--card-bg); border-radius:10px; border:1px solid var(--gray-100) }
+.dashboard-container .card-icon{ width:44px; height:44px; display:grid; place-items:center; border-radius:8px; background:var(--green-50); color:var(--green-700); font-size:20px }
+.dashboard-container .company-card h3{ margin:0; font-size:1rem; color:var(--gray-800) }
+.dashboard-container .company-card p{ margin:6px 0 0; color:var(--gray-600); font-size:0.95rem }
+
+.dashboard-container .company-mission{ display:flex; gap:18px; align-items:stretch; padding:10px }
+.dashboard-container .mission-content{ flex:1; background:var(--card-bg); padding:18px; border-radius:10px; border:1px solid var(--gray-100) }
+.dashboard-container .mission-content h2{ margin:0 0 10px; font-size:1.25rem; color:var(--gray-800) }
+.dashboard-container .mission-list{ margin:12px 0 0; padding-left:18px; color:var(--gray-700) }
+.dashboard-container .mission-stats{ width:260px; display:grid; gap:12px }
+.dashboard-container .mission-stats .stat{ background:var(--gray-50); padding:12px; border-radius:8px; text-align:center; border:1px solid var(--gray-100) }
+.dashboard-container .mission-stats .stat strong{ display:block; font-size:1.25rem; color:var(--gray-800) }
+.dashboard-container .mission-stats .stat span{ color:var(--gray-600); font-size:0.9rem }
+
+.dashboard-container .company-contact{ display:flex; gap:18px; align-items:center; justify-content:space-between; padding:14px; background:var(--card-bg); border-radius:10px; border:1px solid var(--gray-100) }
+.dashboard-container .company-contact h3{ margin:0; font-size:1.05rem; color:var(--gray-800) }
+.dashboard-container .company-contact p{ margin:6px 0 0; color:var(--gray-600) }
+.dashboard-container .contact-actions{ display:flex; gap:10px }
+
+@media (max-width:1000px){
+  .dashboard-container .company-grid{ grid-template-columns:repeat(2,1fr) }
+  .dashboard-container .company-hero{ flex-direction:column; align-items:flex-start }
+  .dashboard-container .company-mission{ flex-direction:column }
+  .dashboard-container .mission-stats{ width:100%; grid-template-columns:repeat(3,1fr) }
+}
+@media (max-width:760px){
+  .dashboard-container .company-grid{ grid-template-columns:1fr }
+  .dashboard-container .mission-stats{ grid-template-columns:repeat(2,1fr) }
+  .dashboard-container .company-contact{ flex-direction:column; align-items:flex-start }
+  .dashboard-container .hero-visual{ display:none }
+}

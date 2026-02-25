@@ -1,0 +1,874 @@
+/* GlobalLoading.css - Design Premium */
+
+/* ==========================================================================
+   VARIÁVEIS
+   ========================================================================== */
+:root {
+  --loading-primary: #16a34a;
+  --loading-primary-light: #dcfce7;
+  --loading-primary-dark: #15803d;
+  --loading-secondary: #3b82f6;
+  --loading-secondary-light: #dbeafe;
+  --loading-bg: #ffffff;
+  --loading-text: #0f172a;
+  --loading-text-light: #64748b;
+  --loading-gray-50: #f8fafc;
+  --loading-gray-100: #f1f5f9;
+  --loading-gray-200: #e2e8f0;
+  --loading-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --loading-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --loading-radius: 12px;
+  --loading-radius-lg: 20px;
+  --loading-transition: 200ms ease;
+}
+
+/* Reset básico */
+.fixed {
+  position: fixed;
+}
+
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.z-\[9999\] {
+  z-index: 9999;
+}
+
+.bg-white {
+  background-color: var(--loading-bg);
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* ==========================================================================
+   BACKGROUND DECOR
+   ========================================================================== */
+.absolute.top-0.left-0.w-full.h-full {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.-z-10 {
+  z-index: -10;
+}
+
+/* Animated Blob 1 */
+.absolute.-top-\[20\%\].-left-\[10\%\] {
+  position: absolute;
+  top: -20%;
+  left: -10%;
+}
+
+.w-\[60\%\].h-\[60\%\] {
+  width: 60%;
+  height: 60%;
+}
+
+.bg-green-50 {
+  background-color: var(--loading-primary-light);
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.blur-\[120px\] {
+  filter: blur(120px);
+}
+
+.opacity-60 {
+  opacity: 0.6;
+}
+
+/* Animated Blob 2 */
+.absolute.-bottom-\[20\%\].-right-\[10\%\] {
+  position: absolute;
+  bottom: -20%;
+  right: -10%;
+}
+
+.w-\[50\%\].h-\[50\%\] {
+  width: 50%;
+  height: 50%;
+}
+
+.bg-blue-50 {
+  background-color: var(--loading-secondary-light);
+}
+
+.blur-\[100px\] {
+  filter: blur(100px);
+}
+
+.opacity-40 {
+  opacity: 0.4;
+}
+
+/* ==========================================================================
+   LOGO ANIMATION
+   ========================================================================== */
+.mb-12 {
+  margin-bottom: 3rem;
+}
+
+.w-24 {
+  width: 6rem;
+}
+
+.h-24 {
+  height: 6rem;
+}
+
+.bg-green-600 {
+  background-color: var(--loading-primary);
+}
+
+.rounded-\[2rem\] {
+  border-radius: 2rem;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.font-black {
+  font-weight: 900;
+}
+
+.shadow-2xl {
+  box-shadow: var(--loading-shadow-lg);
+}
+
+/* Logo Container */
+.relative.flex.items-center.justify-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Pulsing Ring Effect */
+.absolute.inset-0.-z-10 {
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+}
+
+/* ==========================================================================
+   BRAND NAME
+   ========================================================================== */
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-gray-900 {
+  color: var(--loading-text);
+}
+
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+
+.text-\[10px\] {
+  font-size: 0.625rem;
+}
+
+.text-green-600 {
+  color: var(--loading-primary);
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.tracking-\[0\.3em\] {
+  letter-spacing: 0.3em;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+/* ==========================================================================
+   PROGRESS BAR
+   ========================================================================== */
+.w-48 {
+  width: 12rem;
+}
+
+.h-1 {
+  height: 0.25rem;
+}
+
+.bg-gray-100 {
+  background-color: var(--loading-gray-100);
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+/* Animated Progress Line */
+.bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.from-transparent {
+  --tw-gradient-from: transparent;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(0, 0, 0, 0));
+}
+
+.via-green-600 {
+  --tw-gradient-stops: var(--tw-gradient-from), var(--loading-primary), var(--tw-gradient-to, rgba(0, 0, 0, 0));
+}
+
+.to-transparent {
+  --tw-gradient-to: transparent;
+}
+
+/* ==========================================================================
+   STATUS MESSAGES
+   ========================================================================== */
+.h-6 {
+  height: 1.5rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.text-gray-400 {
+  color: var(--loading-text-light);
+}
+
+/* ==========================================================================
+   FOOTER INFO
+   ========================================================================== */
+.absolute.bottom-12 {
+  position: absolute;
+  bottom: 3rem;
+}
+
+.text-\[9px\] {
+  font-size: 0.5625rem;
+}
+
+.text-gray-300 {
+  color: #d1d5db;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+
+/* ==========================================================================
+   ANIMAÇÕES PERSONALIZADAS
+   ========================================================================== */
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scale Pulse Animation */
+@keyframes scalePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Shine Animation */
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Rotate Animation */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   CLASSES UTILITÁRIAS ADICIONAIS
+   ========================================================================== */
+
+/* Para garantir que o loading fique acima de tudo */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--loading-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Container principal */
+.loading-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Logo wrapper com efeitos adicionais */
+.logo-wrapper {
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+.logo-circle {
+  width: 6rem;
+  height: 6rem;
+  background: var(--loading-primary);
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 3rem;
+  font-weight: 900;
+  box-shadow: var(--loading-shadow-lg);
+  animation: scalePulse 2s ease-in-out infinite;
+}
+
+.logo-ring {
+  position: absolute;
+  inset: 0;
+  background: var(--loading-primary);
+  border-radius: 2rem;
+  animation: scalePulse 2s ease-in-out infinite;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+/* Progress bar personalizada */
+.progress-bar {
+  width: 12rem;
+  height: 0.25rem;
+  background: var(--loading-gray-100);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.progress-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--loading-primary),
+    transparent
+  );
+  animation: shine 1.5s ease-in-out infinite;
+}
+
+/* Status messages container */
+.status-container {
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+
+.status-text {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--loading-text-light);
+  text-align: center;
+}
+
+/* Footer */
+.loading-footer {
+  position: absolute;
+  bottom: 3rem;
+  text-align: center;
+}
+
+.footer-text {
+  font-size: 0.5625rem;
+  color: #d1d5db;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .logo-circle {
+    width: 5rem;
+    height: 5rem;
+    font-size: 2.5rem;
+    border-radius: 1.5rem;
+  }
+  
+  .logo-ring {
+    border-radius: 1.5rem;
+  }
+  
+  .progress-bar {
+    width: 10rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+  
+  .text-\[10px\] {
+    font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-circle {
+    width: 4rem;
+    height: 4rem;
+    font-size: 2rem;
+    border-radius: 1rem;
+  }
+  
+  .logo-ring {
+    border-radius: 1rem;
+  }
+  
+  .progress-bar {
+    width: 8rem;
+  }
+  
+  .status-text {
+    font-size: 0.625rem;
+  }
+}
+
+/* ==========================================================================
+   ANIMAÇÃO DE ENTRADA/SAÍDA
+   ========================================================================== */
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.fade-out {
+  animation: fadeIn 0.8s ease-in reverse forwards;
+}
+
+/* ==========================================================================
+   EFICIÊNCIA DE PERFORMANCE
+   ========================================================================== */
+
+/* Otimização para dispositivos móveis */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .logo-ring,
+  .progress-line {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   MODO ALTA CONTRASTE
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  .logo-circle {
+    box-shadow: 0 0 0 3px white, var(--loading-shadow-lg);
+  }
+  
+  .progress-line {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--loading-primary-dark),
+      transparent
+    );
+  }
+}
+
+/* ==========================================================================
+   ANIMAÇÕES PARA FRAMER MOTION FALLBACK
+   ========================================================================== */
+
+/* Fallback para caso o Framer Motion não carregue */
+.no-js .logo-wrapper {
+  animation: scalePulse 2s ease-in-out infinite;
+}
+
+.no-js .logo-ring {
+  animation: scalePulse 2s ease-in-out infinite;
+}
+
+.no-js .progress-line {
+  animation: shine 1.5s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   CLASSES DE UTILIDADE ADICIONAIS
+   ========================================================================== */
+
+/* Espaçamento */
+.m-0 { margin: 0; }
+.p-0 { padding: 0; }
+
+/* Texto */
+.font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+
+/* Opacidade */
+.opacity-0 { opacity: 0; }
+.opacity-25 { opacity: 0.25; }
+.opacity-50 { opacity: 0.5; }
+.opacity-75 { opacity: 0.75; }
+.opacity-100 { opacity: 1; }
+
+/* Transformações */
+.scale-0 { transform: scale(0); }
+.scale-50 { transform: scale(0.5); }
+.scale-75 { transform: scale(0.75); }
+.scale-90 { transform: scale(0.9); }
+.scale-95 { transform: scale(0.95); }
+.scale-100 { transform: scale(1); }
+.scale-105 { transform: scale(1.05); }
+.scale-110 { transform: scale(1.1); }
+.scale-125 { transform: scale(1.25); }
+
+/* Transições */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: var(--loading-transition);
+}
+
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: var(--loading-transition);
+}
+
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: var(--loading-transition);
+}
+
+/* ==========================================================================
+   ESTILOS ESPECÍFICOS PARA O COMPONENTE
+   ========================================================================== */
+
+/* Container do loading */
+.global-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: var(--loading-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Decorativos de fundo */
+.loading-bg-decor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.loading-bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+  animation: float 20s ease-in-out infinite;
+}
+
+.loading-bg-blob-1 {
+  background: var(--loading-primary-light);
+  width: 60%;
+  height: 60%;
+  top: -20%;
+  left: -10%;
+  animation-delay: 0s;
+}
+
+.loading-bg-blob-2 {
+  background: var(--loading-secondary-light);
+  width: 50%;
+  height: 50%;
+  bottom: -20%;
+  right: -10%;
+  animation-delay: -5s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) rotate(120deg) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) rotate(240deg) scale(0.9);
+  }
+}
+
+/* Logo principal */
+.loading-logo {
+  width: 96px;
+  height: 96px;
+  background: var(--loading-primary);
+  border-radius: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 48px;
+  font-weight: 900;
+  box-shadow: 
+    0 20px 60px rgba(22, 163, 74, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  position: relative;
+  margin-bottom: 48px;
+  animation: logoGlow 2s ease-in-out infinite;
+}
+
+.loading-logo::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  background: var(--loading-primary);
+  border-radius: 40px;
+  opacity: 0.3;
+  filter: blur(12px);
+  animation: logoPulse 2s ease-in-out infinite;
+}
+
+@keyframes logoGlow {
+  0%, 100% {
+    box-shadow: 
+      0 20px 60px rgba(22, 163, 74, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 20px 80px rgba(22, 163, 74, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    transform: scale(0.95);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.4;
+  }
+}
+
+/* Informações da marca */
+.loading-brand {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.loading-brand-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--loading-text);
+  margin-bottom: 8px;
+  letter-spacing: -0.025em;
+}
+
+.loading-brand-tagline {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--loading-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+}
+
+/* Barra de progresso */
+.loading-progress-container {
+  width: 192px;
+  height: 4px;
+  background: var(--loading-gray-100);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.loading-progress-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--loading-primary) 50%,
+    transparent 100%
+  );
+  animation: progressShine 1.5s ease-in-out infinite;
+}
+
+@keyframes progressShine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Mensagens de status */
+.loading-status-container {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  min-width: 200px;
+}
+
+.loading-status-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--loading-text-light);
+  text-align: center;
+  line-height: 1;
+}
+
+/* Footer */
+.loading-footer {
+  position: absolute;
+  bottom: 48px;
+  text-align: center;
+}
+
+.loading-footer-text {
+  font-size: 9px;
+  color: #d1d5db;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}

@@ -1,0 +1,1081 @@
+/* Privacy.css - Design Premium */
+
+/* ==========================================================================
+   VARIÁVEIS
+   ========================================================================== */
+.privacy-variables {
+  --privacy-bg: #ffffff;
+  --privacy-border: #e2e8f0;
+  --privacy-text: #0f172a;
+  --privacy-text-light: #64748b;
+  --privacy-primary: #16a34a;
+  --privacy-primary-light: #dcfce7;
+  --privacy-primary-dark: #15803d;
+  --privacy-secondary: #3b82f6;
+  --privacy-secondary-light: #dbeafe;
+  --privacy-warning: #f59e0b;
+  --privacy-warning-light: #fef3c7;
+  --privacy-danger: #dc2626;
+  --privacy-danger-light: #fee2e2;
+  --privacy-success: #10b981;
+  --privacy-success-light: #d1fae5;
+  --privacy-gray-50: #f8fafc;
+  --privacy-gray-100: #f1f5f9;
+  --privacy-gray-200: #e2e8f0;
+  --privacy-gray-300: #cbd5e1;
+  --privacy-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --privacy-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --privacy-radius: 12px;
+  --privacy-radius-lg: 20px;
+  --privacy-radius-xl: 28px;
+  --privacy-transition: 200ms ease;
+}
+
+.privacy-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  padding: 40px 20px;
+}
+
+/* Container */
+.privacy-page .privacy-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
+.privacy-page .privacy-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.privacy-page .privacy-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--privacy-primary-light);
+  color: var(--privacy-primary);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--privacy-primary);
+  margin-bottom: 24px;
+}
+
+.privacy-page .privacy-badge-icon {
+  font-size: 16px;
+}
+
+.privacy-page .privacy-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--privacy-text);
+  margin-bottom: 16px;
+  line-height: 1.1;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .privacy-page .privacy-title {
+    font-size: 32px;
+  }
+}
+
+.privacy-page .privacy-highlight {
+  color: var(--privacy-primary);
+  position: relative;
+  display: inline-block;
+}
+
+.privacy-page .privacy-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: var(--privacy-primary-light);
+  z-index: -1;
+  border-radius: 4px;
+}
+
+.privacy-page .privacy-subtitle {
+  font-size: 18px;
+  color: var(--privacy-text-light);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   FEATURES GRID
+   ========================================================================== */
+
+.privacy-page .privacy-features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+@media (min-width: 768px) {
+  .privacy-page .privacy-features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .privacy-page .privacy-features {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.privacy-page .privacy-feature-card {
+  background: var(--privacy-bg);
+  border-radius: var(--privacy-radius-lg);
+  padding: 32px;
+  box-shadow: var(--privacy-shadow);
+  border: 1px solid var(--privacy-border);
+  text-align: center;
+  transition: all var(--privacy-transition);
+}
+
+.privacy-page .privacy-feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--privacy-shadow-lg);
+}
+
+.privacy-page .privacy-feature-card.feature-green:hover {
+  border-color: var(--privacy-primary);
+}
+
+.privacy-page .privacy-feature-card.feature-blue:hover {
+  border-color: var(--privacy-secondary);
+}
+
+.privacy-page .privacy-feature-card.feature-purple:hover {
+  border-color: #8b5cf6;
+}
+
+.privacy-page .privacy-feature-card.feature-orange:hover {
+  border-color: var(--privacy-warning);
+}
+
+.privacy-page .feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 24px;
+}
+
+.privacy-page .privacy-feature-card.feature-green .feature-icon {
+  background: var(--privacy-primary-light);
+  color: var(--privacy-primary);
+}
+
+.privacy-page .privacy-feature-card.feature-blue .feature-icon {
+  background: var(--privacy-secondary-light);
+  color: var(--privacy-secondary);
+}
+
+.privacy-page .privacy-feature-card.feature-purple .feature-icon {
+  background: #f3e8ff;
+  color: #8b5cf6;
+}
+
+.privacy-page .privacy-feature-card.feature-orange .feature-icon {
+  background: var(--privacy-warning-light);
+  color: var(--privacy-warning);
+}
+
+.privacy-page .feature-icon-svg {
+  font-size: 24px;
+}
+
+.privacy-page .feature-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--privacy-text);
+  margin-bottom: 12px;
+}
+
+.privacy-page .feature-description {
+  font-size: 14px;
+  color: var(--privacy-text-light);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   CARDS PRINCIPAIS
+   ========================================================================== */
+
+.privacy-page .privacy-card {
+  background: var(--privacy-bg);
+  border-radius: var(--privacy-radius-xl);
+  padding: 40px;
+  box-shadow: var(--privacy-shadow-lg);
+  border: 1px solid var(--privacy-border);
+  margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+  .privacy-page .privacy-card {
+    padding: 24px;
+  }
+}
+
+.privacy-page .privacy-card-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.privacy-page .privacy-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--privacy-primary-light);
+  color: var(--privacy-primary);
+  flex-shrink: 0;
+}
+
+.privacy-page .privacy-card-icon-svg {
+  font-size: 24px;
+}
+
+.privacy-page .privacy-card-title-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.privacy-page .privacy-card-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--privacy-text);
+  margin-bottom: 8px;
+}
+
+.privacy-page .privacy-card-subtitle {
+  font-size: 16px;
+  color: var(--privacy-text-light);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   TRANSPARÊNCIA DE IA
+   ========================================================================== */
+
+.privacy-page .ai-transparency-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .privacy-page .ai-transparency-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.privacy-page .ai-transparency-card {
+  background: var(--privacy-gray-50);
+  border: 1px solid var(--privacy-gray-100);
+  border-radius: var(--privacy-radius);
+  padding: 24px;
+  transition: all var(--privacy-transition);
+}
+
+.privacy-page .ai-transparency-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--privacy-shadow);
+  border-color: var(--privacy-primary);
+}
+
+.privacy-page .ai-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.privacy-page .ai-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--privacy-primary-light);
+  color: var(--privacy-primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.privacy-page .ai-card-icon-svg {
+  font-size: 18px;
+}
+
+.privacy-page .ai-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--privacy-text);
+}
+
+.privacy-page .ai-card-description {
+  font-size: 14px;
+  color: var(--privacy-text-light);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.privacy-page .ai-card-data {
+  margin-bottom: 20px;
+}
+
+.privacy-page .data-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--privacy-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.privacy-page .data-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.privacy-page .data-tag {
+  padding: 6px 12px;
+  background: white;
+  border: 1px solid var(--privacy-gray-200);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--privacy-text);
+}
+
+.privacy-page .ai-card-purpose {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px;
+  background: var(--privacy-primary-light);
+  border: 1px solid var(--privacy-primary);
+  border-radius: var(--privacy-radius);
+}
+
+.privacy-page .purpose-icon {
+  color: var(--privacy-primary);
+  font-size: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.privacy-page .purpose-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--privacy-primary-dark);
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   CENTRO DE CONSENTIMENTO
+   ========================================================================== */
+
+.privacy-page .consent-center {
+  background: linear-gradient(135deg, var(--privacy-gray-50), white);
+}
+
+.privacy-page .consent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.privacy-page .consent-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  background: var(--privacy-bg);
+  border: 1px solid var(--privacy-gray-200);
+  border-radius: var(--privacy-radius);
+  transition: all var(--privacy-transition);
+}
+
+.privacy-page .consent-toggle:hover {
+  border-color: var(--privacy-primary);
+  box-shadow: var(--privacy-shadow);
+}
+
+.privacy-page .toggle-content {
+  flex: 1;
+  min-width: 0;
+  padding-right: 20px;
+}
+
+.privacy-page .toggle-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.privacy-page .toggle-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--privacy-text);
+  margin: 0;
+}
+
+.privacy-page .toggle-critical-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--privacy-danger-light);
+  color: var(--privacy-danger);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--privacy-danger);
+}
+
+.privacy-page .toggle-description {
+  font-size: 14px;
+  color: var(--privacy-text-light);
+  line-height: 1.5;
+}
+
+.privacy-page .toggle-switch {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  background: var(--privacy-gray-200);
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  transition: all var(--privacy-transition);
+  flex-shrink: 0;
+}
+
+.privacy-page .toggle-switch-enabled {
+  background: var(--privacy-primary);
+}
+
+.privacy-page .toggle-switch-handle {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background: var(--privacy-bg);
+  border-radius: 50%;
+  transition: transform var(--privacy-transition);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.privacy-page .toggle-switch-enabled .toggle-switch-handle {
+  transform: translateX(24px);
+}
+
+.privacy-page .consent-divider {
+  position: relative;
+  text-align: center;
+  margin: 32px 0;
+}
+
+.privacy-page .consent-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--privacy-gray-200);
+}
+
+.privacy-page .divider-label {
+  position: relative;
+  display: inline-block;
+  padding: 0 20px;
+  background: linear-gradient(135deg, var(--privacy-gray-50), white);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--privacy-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   DIREITOS DO USUÁRIO
+   ========================================================================== */
+
+.privacy-page .user-rights-section {
+  margin-bottom: 60px;
+}
+
+.privacy-page .rights-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--privacy-text);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.privacy-page .rights-subtitle {
+  font-size: 16px;
+  color: var(--privacy-text-light);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.privacy-page .rights-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .privacy-page .rights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .privacy-page .rights-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.privacy-page .right-card {
+  background: var(--privacy-bg);
+  border-radius: var(--privacy-radius-lg);
+  padding: 32px;
+  box-shadow: var(--privacy-shadow);
+  border: 1px solid var(--privacy-border);
+  text-align: center;
+  transition: all var(--privacy-transition);
+}
+
+.privacy-page .right-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--privacy-shadow-lg);
+  border-color: var(--privacy-primary);
+}
+
+.privacy-page .right-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--privacy-primary-light);
+  color: var(--privacy-primary);
+  border-radius: 50%;
+  margin: 0 auto 20px;
+}
+
+.privacy-page .right-icon-svg {
+  font-size: 20px;
+}
+
+.privacy-page .right-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--privacy-text);
+  margin-bottom: 12px;
+}
+
+.privacy-page .right-description {
+  font-size: 14px;
+  color: var(--privacy-text-light);
+  line-height: 1.5;
+  margin-bottom: 24px;
+  min-height: 42px;
+}
+
+.privacy-page .right-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--privacy-primary);
+  color: var(--privacy-primary);
+  padding: 10px 20px;
+  border-radius: var(--privacy-radius);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--privacy-transition);
+}
+
+.privacy-page .right-action:hover {
+  background: var(--privacy-primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+}
+
+.privacy-page .action-icon {
+  transition: transform var(--privacy-transition);
+}
+
+.privacy-page .right-action:hover .action-icon {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   GESTÃO DE DADOS
+   ========================================================================== */
+
+.privacy-page .data-management-section {
+  margin-bottom: 60px;
+}
+
+.privacy-page .management-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .privacy-page .management-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.privacy-page .management-card {
+  background: var(--privacy-bg);
+  border-radius: var(--privacy-radius-xl);
+  padding: 32px;
+  box-shadow: var(--privacy-shadow);
+  border: 1px solid var(--privacy-border);
+  transition: all var(--privacy-transition);
+}
+
+.privacy-page .management-card:hover {
+  box-shadow: var(--privacy-shadow-lg);
+}
+
+.privacy-page .management-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.privacy-page .management-card-icon {
+  font-size: 24px;
+  color: var(--privacy-primary);
+}
+
+.privacy-page .delete-icon {
+  color: var(--privacy-danger);
+}
+
+.privacy-page .management-card-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--privacy-text);
+  margin: 0;
+}
+
+.privacy-page .management-card-description {
+  font-size: 14px;
+  color: var(--privacy-text-light);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.privacy-page .delete-description {
+  color: var(--privacy-danger);
+  background: var(--privacy-danger-light);
+  padding: 16px;
+  border-radius: var(--privacy-radius);
+  border: 1px solid var(--privacy-danger);
+}
+
+.privacy-page .export-progress {
+  margin-bottom: 24px;
+}
+
+.privacy-page .progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.privacy-page .progress-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--privacy-text);
+}
+
+.privacy-page .progress-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--privacy-primary);
+}
+
+.privacy-page .progress-bar {
+  height: 6px;
+  background: var(--privacy-gray-200);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.privacy-page .progress-fill {
+  height: 100%;
+  background: var(--privacy-primary);
+  border-radius: 3px;
+  transition: width var(--privacy-transition);
+}
+
+.privacy-page .delete-warning {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--privacy-warning-light);
+  border: 1px solid var(--privacy-warning);
+  border-radius: var(--privacy-radius);
+  margin-bottom: 24px;
+}
+
+.privacy-page .warning-icon {
+  color: var(--privacy-warning);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.privacy-page .warning-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--privacy-warning);
+}
+
+.privacy-page .management-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--privacy-radius);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--privacy-transition);
+  border: 2px solid transparent;
+}
+
+.privacy-page .export-button {
+  background: var(--privacy-primary);
+  color: white;
+  border-color: var(--privacy-primary);
+}
+
+.privacy-page .export-button:hover:not(:disabled) {
+  background: var(--privacy-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+}
+
+.privacy-page .export-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.privacy-page .delete-button {
+  background: var(--privacy-bg);
+  color: var(--privacy-danger);
+  border-color: var(--privacy-danger);
+}
+
+.privacy-page .delete-button:hover {
+  background: var(--privacy-danger);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+.privacy-page .button-icon {
+  font-size: 18px;
+}
+
+.privacy-page .loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   SUPORTE JURÍDICO
+   ========================================================================== */
+
+.privacy-page .legal-support-section {
+  background: linear-gradient(135deg, var(--privacy-primary), var(--privacy-primary-dark));
+  border-radius: var(--privacy-radius-xl);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.privacy-page .legal-support-overlay {
+  position: absolute;
+  inset: 0;
+  background: url('https://www.transparenttextures.com/patterns/cubes.png');
+  opacity: 0.15;
+}
+
+.privacy-page .legal-support-content {
+  position: relative;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .privacy-page .legal-support-content {
+    padding: 32px 24px;
+  }
+}
+
+.privacy-page .legal-support-info {
+  max-width: 600px;
+}
+
+.privacy-page .legal-support-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.privacy-page .legal-support-description {
+  font-size: 16px;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.privacy-page .legal-support-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.privacy-page .legal-action-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--privacy-radius);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--privacy-transition);
+}
+
+.privacy-page .legal-action-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: white;
+  transform: translateY(-2px);
+}
+
+.privacy-page .legal-action-primary {
+  background: white;
+  color: var(--privacy-primary-dark);
+  border-color: white;
+}
+
+.privacy-page .legal-action-primary:hover {
+  background: var(--privacy-primary-light);
+  color: var(--privacy-primary-dark);
+}
+
+.privacy-page .action-button-icon {
+  font-size: 18px;
+}
+
+/* ==========================================================================
+   MODAL DE CONFIRMAÇÃO
+   ========================================================================== */
+
+.privacy-page .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.privacy-page .delete-confirmation-modal {
+  background: var(--privacy-bg);
+  border-radius: var(--privacy-radius-xl);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  box-shadow: var(--privacy-shadow-lg);
+}
+
+.privacy-page .modal-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 32px 24px;
+  background: var(--privacy-danger-light);
+  border-bottom: 1px solid var(--privacy-danger);
+}
+
+.privacy-page .modal-icon {
+  font-size: 32px;
+  color: var(--privacy-danger);
+  flex-shrink: 0;
+}
+
+.privacy-page .modal-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--privacy-danger);
+  margin: 0;
+}
+
+.privacy-page .modal-content {
+  padding: 32px;
+}
+
+.privacy-page .modal-warning {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--privacy-text);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.privacy-page .modal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px 0;
+}
+
+.privacy-page .modal-list li {
+  padding: 8px 0;
+  padding-left: 28px;
+  position: relative;
+  font-size: 14px;
+  color: var(--privacy-text-light);
+}
+
+.privacy-page .modal-list li::before {
+  content: '⚠';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  color: var(--privacy-danger);
+  font-weight: bold;
+}
+
+.privacy-page .modal-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.privacy-page .modal-button {
+  flex: 1;
+  padding: 14px 24px;
+  border-radius: var(--privacy-radius);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--privacy-transition);
+  border: 2px solid transparent;
+}
+
+.privacy-page .modal-button-cancel {
+  background: var(--privacy-gray-100);
+  color: var(--privacy-text);
+  border-color: var(--privacy-gray-200);
+}
+
+.privacy-page .modal-button-cancel:hover {
+  background: var(--privacy-gray-200);
+}
+
+.privacy-page .modal-button-confirm {
+  background: var(--privacy-danger);
+  color: white;
+  border-color: var(--privacy-danger);
+}
+
+.privacy-page .modal-button-confirm:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+/* ==========================================================================
+   ACESSIBILIDADE
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .privacy-page * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.privacy-page :focus-visible {
+  outline: 2px solid var(--privacy-primary);
+  outline-offset: 2px;
+  border-radius: var(--privacy-radius);
+}
+
+.privacy-page button:focus-visible {
+  outline: 2px solid var(--privacy-primary);
+  outline-offset: 2px;
+  border-radius: var(--privacy-radius);
+}
+

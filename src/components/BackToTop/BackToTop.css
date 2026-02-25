@@ -1,0 +1,37 @@
+.back-to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 28px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #FF6A00, #0053A6);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    z-index: 9999;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+}
+
+.back-to-top:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
+}
+
+.back-to-top:focus {
+    outline: 3px solid rgba(10, 108, 255, 0.18);
+    outline-offset: 4px;
+}
+
+@media (max-width: 480px) {
+    .back-to-top {
+        right: 16px;
+        bottom: 18px;
+        width: 40px;
+        height: 40px;
+    }
+}

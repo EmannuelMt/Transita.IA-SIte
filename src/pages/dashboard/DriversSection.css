@@ -1,0 +1,61 @@
+/* Drivers Section - styles scoped to dashboard */
+.dashboard-container .section-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.dashboard-container .section-header {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.dashboard-container .section-header h2 { font-size: 1.25rem; margin:0; color:var(--gray-800); }
+.dashboard-container .section-header p { margin:6px 0 0; color:var(--muted); font-size:0.95rem }
+
+.dashboard-container .section-controls{ display:flex; gap:12px; align-items:center }
+
+.dashboard-container .search-box{
+  flex:1; display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; color:var(--gray-500)
+}
+.dashboard-container .search-box input{ flex:1; border:none; background:transparent; outline:none; color:var(--gray-800); font-size:0.95rem }
+.dashboard-container .search-box input::placeholder{ color:var(--gray-300) }
+
+.dashboard-container .btn-add{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:10px; background:linear-gradient(90deg,var(--green-600),var(--green-500)); color:var(--white); border:none; font-weight:600 }
+.dashboard-container .btn-add:hover{ transform:translateY(-2px); box-shadow:var(--shadow-sm) }
+
+.dashboard-container .table-container{ background:var(--card-bg); border-radius:12px; border:1px solid var(--gray-100); overflow:hidden }
+
+.dashboard-container .data-table{ width:100%; border-collapse:collapse; font-size:0.95rem }
+.dashboard-container .data-table thead{ background:var(--gray-50); border-bottom:1px solid var(--gray-100) }
+.dashboard-container .data-table th{ padding:12px; text-align:left; font-weight:700; color:var(--gray-600); text-transform:uppercase; font-size:0.75rem }
+.dashboard-container .data-table td{ padding:12px; color:var(--gray-800) }
+.dashboard-container .data-table tbody tr{ transition:background 160ms }
+.dashboard-container .data-table tbody tr:hover{ background:var(--gray-50) }
+
+.dashboard-container .name-cell{ font-weight:700 }
+.dashboard-container .center{ text-align:center }
+
+.dashboard-container .status-badge{ display:inline-flex; padding:6px 10px; border-radius:999px; font-weight:700; font-size:0.8rem }
+.dashboard-container .status-badge.ativo{ background:var(--green-100); color:var(--green-800) }
+.dashboard-container .status-badge.inativo{ background:var(--gray-100); color:var(--gray-700) }
+
+.dashboard-container .fine-count{ display:inline-block; padding:6px 10px; border-radius:6px; background:var(--gray-100); font-weight:700 }
+.dashboard-container .fine-count.has-fines{ background:var(--green-50); color:var(--green-700) }
+
+.dashboard-container .actions-cell{ display:flex; gap:8px }
+.dashboard-container .action-btn{ width:36px; height:36px; border-radius:8px; border:none; display:grid; place-items:center; cursor:pointer; color:var(--white) }
+.dashboard-container .action-btn.edit{ background:var(--green-600) }
+.dashboard-container .action-btn.delete{ background:#ef4444 }
+
+.dashboard-container .section-stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; background:var(--card-bg); padding:14px; border-radius:10px; border:1px solid var(--gray-100) }
+.dashboard-container .stat-item{ display:flex; flex-direction:column }
+.dashboard-container .stat-label{ font-size:0.8rem; color:var(--gray-600); text-transform:uppercase; font-weight:700 }
+.dashboard-container .stat-value{ font-size:1.5rem; font-weight:800; color:var(--gray-800) }
+
+/* Responsive */
+@media (max-width:768px){
+  .dashboard-container .section-controls{ flex-direction:column; gap:8px }
+  .dashboard-container .data-table{ min-width:720px }
+  .dashboard-container .btn-add{ width:100%; justify-content:center }
+}

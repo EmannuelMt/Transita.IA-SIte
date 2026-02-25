@@ -1,0 +1,35 @@
+/* Fines Section - scoped */
+.dashboard-container .fines-metrics{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px }
+
+.dashboard-container .metric-card{ background:var(--card-bg); padding:12px; border-radius:10px; border-left:4px solid #ef4444; display:flex; flex-direction:column; gap:8px }
+.dashboard-container .metric-card.paid{ border-left-color:var(--green-600) }
+.dashboard-container .metric-card.pending{ border-left-color:var(--green-300) }
+.dashboard-container .metric-card.contested{ border-left-color:#8b5cf6 }
+
+.dashboard-container .metric-label{ font-size:0.8rem; color:var(--gray-600); text-transform:uppercase; font-weight:700 }
+.dashboard-container .metric-value{ font-size:1.25rem; font-weight:800; color:var(--gray-800) }
+.dashboard-container .metric-unit{ font-size:0.85rem; color:var(--gray-400) }
+
+.dashboard-container .filter-select{ padding:10px 12px; background:var(--card-bg); border:1px solid var(--gray-100); border-radius:8px; color:var(--gray-800); font-weight:700 }
+.dashboard-container .filter-select:focus{ outline:none; box-shadow:0 6px 18px rgba(2,6,23,0.06) }
+
+.dashboard-container .protocol-cell{ font-family:monospace; font-weight:700; color:var(--green-700) }
+.dashboard-container .vehicle-cell{ font-family:monospace; font-weight:700; color:var(--gray-800) }
+.dashboard-container .location-cell{ font-size:0.95rem; color:var(--gray-600); max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+
+.dashboard-container .amount-cell{ font-weight:800; color:#ef4444 }
+.dashboard-container .infraction-type{ font-weight:700; color:var(--gray-800) }
+
+.dashboard-container .status-badge.paga{ background:var(--green-100); color:var(--green-700) }
+.dashboard-container .status-badge.pendente{ background:#fef3c7; color:#92400e }
+.dashboard-container .status-badge.contestando{ background:#e9d5ff; color:#6b21a8 }
+
+.dashboard-container .action-cell{ text-align:center }
+.dashboard-container .action-btn.view{ display:inline-flex; align-items:center; justify-content:center; width:36px;height:36px;border-radius:8px;border:none;background:var(--gray-50);color:var(--gray-700) }
+.dashboard-container .action-btn.view:hover{ background:var(--green-50); color:var(--green-700) }
+
+.dashboard-container .table-footer{ display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--card-bg); border-top:1px solid var(--gray-100); font-size:0.95rem; color:var(--gray-600 }
+.dashboard-container .result-count{ font-weight:700 }
+
+@media (max-width:1024px){ .dashboard-container .fines-metrics{ grid-template-columns:repeat(2,1fr) } }
+@media (max-width:768px){ .dashboard-container .fines-metrics{ grid-template-columns:1fr } .dashboard-container .metric-card{ flex-direction:row; align-items:center; justify-content:space-between } .dashboard-container .data-table{ min-width:800px } .dashboard-container .table-container{ overflow-x:auto } }
