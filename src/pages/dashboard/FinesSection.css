@@ -28,7 +28,7 @@
 .dashboard-container .action-btn.view{ display:inline-flex; align-items:center; justify-content:center; width:36px;height:36px;border-radius:8px;border:none;background:var(--gray-50);color:var(--gray-700) }
 .dashboard-container .action-btn.view:hover{ background:var(--green-50); color:var(--green-700) }
 
-.dashboard-container .table-footer{ display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--card-bg); border-top:1px solid var(--gray-100); font-size:0.95rem; color:var(--gray-600 }
+.dashboard-container .table-footer{ display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--card-bg); border-top:1px solid var(--gray-100); font-size:0.95rem; color:var(--gray-600); }
 .dashboard-container .result-count{ font-weight:700 }
 
 @media (max-width:1024px){ .dashboard-container .fines-metrics{ grid-template-columns:repeat(2,1fr) } }
