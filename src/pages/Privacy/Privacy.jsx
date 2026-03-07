@@ -1,498 +1,159 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
+import { motion } from 'motion/react';
 import { 
-  FiShield, FiLock, FiEye, FiDatabase, FiDownload, 
-  FiTrash2, FiCheckCircle, FiInfo, FiExternalLink, 
-  FiMapPin, FiActivity, FiCpu, FiAlertCircle,
-  FiUser, FiFileText, FiMail, FiChevronRight,
-  FiCalendar, FiHardDrive, FiGlobe
-} from 'react-icons/fi';
-import './Privacy.css';
+  ShieldCheck, 
+  Lock, 
+  Eye, 
+  Database, 
+  FileText, 
+  UserCheck, 
+  Download, 
+  Trash2,
+  Info,
+  ChevronRight
+} from 'lucide-react';
 
 const Privacy = () => {
-  const [consents, setConsents] = useState({
-    gps: true,
-    telemetry: true,
-    aiAnalysis: true,
-    marketing: false,
-    sharing: false,
-    dataRetention: true,
-    cookies: true
-  });
-
-  const [isExporting, setIsExporting] = useState(false);
-  const [exportProgress, setExportProgress] = useState(0);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
-  const toggleConsent = (key) => {
-    setConsents(prev => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  const handleExport = () => {
-    setIsExporting(true);
-    setExportProgress(0);
-    
-    const interval = setInterval(() => {
-      setExportProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => setIsExporting(false), 500);
-          return 100;
-        }
-        return prev + 10;
-      });
-    }, 200);
-  };
-
-  const handleDeleteAccount = () => {
-    setShowDeleteConfirm(false);
-    // Em uma aplicação real, aqui seria a chamada API
-    alert('Solicitação de exclusão enviada. Você receberá um email de confirmação.');
-  };
-
-  const privacyFeatures = [
+  const sections = [
     {
-      id: 1,
-      title: 'Criptografia de Ponta a Ponta',
-      description: 'Todos os dados são criptografados em trânsito e em repouso usando padrões AES-256.',
-      icon: FiLock,
-      color: 'feature-green'
+      title: 'Segurança de Dados',
+      icon: Lock,
+      content: 'Utilizamos criptografia AES-256 para todos os dados em repouso e TLS 1.3 para dados em trânsito. Seus dados logísticos são protegidos pelos mais altos padrões da indústria.',
+      color: 'bg-blue-50 text-blue-600'
     },
     {
-      id: 2,
-      title: 'Anonimização de Dados',
-      description: 'Dados pessoais são anonimizados antes de serem usados para treinamento de IA.',
-      icon: FiUser,
-      color: 'feature-blue'
+      title: 'Transparência de IA',
+      icon: Eye,
+      content: 'Nossa IA processa dados de rotas, tráfego e consumo para otimizar sua operação. Não compartilhamos dados identificáveis com terceiros para treinamento de modelos externos.',
+      color: 'bg-indigo-50 text-indigo-600'
     },
     {
-      id: 3,
-      title: 'Retenção Limitada',
-      description: 'Dados são automaticamente excluídos após 36 meses, exceto por obrigação legal.',
-      icon: FiCalendar,
-      color: 'feature-purple'
-    },
-    {
-      id: 4,
-      title: 'Conformidade Global',
-      description: 'Estamos em conformidade com LGPD, GDPR e outras regulamentações internacionais.',
-      icon: FiGlobe,
-      color: 'feature-orange'
-    },
-  ];
-
-  const aiTransparency = [
-    {
-      id: 1,
-      title: 'Otimização de Rotas',
-      description: 'Processamos sua localização em tempo real para calcular trajetos mais curtos e reduzir emissões de CO2.',
-      icon: FiMapPin,
-      dataPoints: ['Localização', 'Tempo de viagem', 'Consumo de combustível'],
-      purpose: 'Reduzir custos operacionais e impacto ambiental'
-    },
-    {
-      id: 2,
-      title: 'Análise de Comportamento',
-      description: 'Telemetria de aceleração e frenagem é usada para gerar seu Score de Segurança.',
-      icon: FiActivity,
-      dataPoints: ['Padrões de direção', 'Eventos de frenagem', 'Acelerações'],
-      purpose: 'Melhorar a segurança dos motoristas'
-    },
-    {
-      id: 3,
-      title: 'Manutenção Preditiva',
-      description: 'Dados do veículo são analisados para prever falhas antes que aconteçam.',
-      icon: FiCpu,
-      dataPoints: ['Desempenho do motor', 'Temperatura', 'Pressão dos pneus'],
-      purpose: 'Prevenir quebras e reduzir custos de manutenção'
-    },
-  ];
-
-  const userRights = [
-    { id: 1, title: 'Acesso aos Dados', icon: FiEye, description: 'Verifique todos os dados que temos sobre você' },
-    { id: 2, title: 'Correção', icon: FiCheckCircle, description: 'Solicite correção de dados incorretos' },
-    { id: 3, title: 'Portabilidade', icon: FiDatabase, description: 'Obtenha uma cópia dos seus dados' },
-    { id: 4, title: 'Oposição', icon: FiAlertCircle, description: 'Oponha-se ao processamento de dados' },
+      title: 'Conformidade LGPD',
+      icon: UserCheck,
+      content: 'Estamos em total conformidade com a Lei Geral de Proteção de Dados (LGPD). Você tem controle total sobre seus dados e como eles são utilizados.',
+      color: 'bg-emerald-50 text-emerald-600'
+    }
   ];
 
   return (
-    <div className="privacy-variables privacy-page">
-      <div className="privacy-container">
+    <div className="pt-24 pb-20 bg-slate-50 min-h-screen">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <motion.header 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="privacy-header"
-        >
-          <div className="privacy-badge">
-            <FiShield className="privacy-badge-icon" />
-            <span>Privacidade e Transparência</span>
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-sm mb-6">
+            <ShieldCheck size={32} className="text-indigo-600" />
           </div>
-          <h1 className="privacy-title">
-            Sua segurança é nossa <span className="privacy-highlight">prioridade</span>
-          </h1>
-          <p className="privacy-subtitle">
-            Gerencie como seus dados são utilizados pela Transita.IA e mantenha o controle total sobre sua pegada digital.
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Privacidade e Transparência</h1>
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            Na Transita.AI, levamos a segurança dos seus dados a sério. 
+            Entenda como protegemos suas informações e seus direitos como usuário.
           </p>
-        </motion.header>
-
-        {/* Features Grid */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="privacy-features"
-        >
-          {privacyFeatures.map(feature => {
-            const Icon = feature.icon;
-            return (
-              <div key={feature.id} className={`privacy-feature-card ${feature.color}`}>
-                <div className="feature-icon">
-                  <Icon className="feature-icon-svg" />
-                </div>
-                <h3 className="feature-title">{feature.title}</h3>
-                <p className="feature-description">{feature.description}</p>
-              </div>
-            );
-          })}
-        </motion.div>
-
-        {/* AI Transparency Card */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="privacy-card"
-        >
-          <div className="privacy-card-header">
-            <div className="privacy-card-icon">
-              <FiCpu className="privacy-card-icon-svg" />
-            </div>
-            <div className="privacy-card-title-section">
-              <h2 className="privacy-card-title">Transparência de IA</h2>
-              <p className="privacy-card-subtitle">
-                Saiba exatamente como nossos algoritmos processam seus dados
-              </p>
-            </div>
-          </div>
-
-          <div className="ai-transparency-grid">
-            {aiTransparency.map(item => {
-              const Icon = item.icon;
-              return (
-                <div key={item.id} className="ai-transparency-card">
-                  <div className="ai-card-header">
-                    <div className="ai-card-icon">
-                      <Icon className="ai-card-icon-svg" />
-                    </div>
-                    <h3 className="ai-card-title">{item.title}</h3>
-                  </div>
-                  
-                  <p className="ai-card-description">{item.description}</p>
-                  
-                  <div className="ai-card-data">
-                    <h4 className="data-title">Dados Coletados:</h4>
-                    <div className="data-tags">
-                      {item.dataPoints.map((point, index) => (
-                        <span key={index} className="data-tag">{point}</span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="ai-card-purpose">
-                    <FiInfo className="purpose-icon" />
-                    <span className="purpose-text">{item.purpose}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </motion.div>
-
-        {/* Consent Center */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="privacy-card consent-center"
-        >
-          <div className="privacy-card-header">
-            <div className="privacy-card-icon">
-              <FiLock className="privacy-card-icon-svg" />
-            </div>
-            <div className="privacy-card-title-section">
-              <h2 className="privacy-card-title">Centro de Consentimento</h2>
-              <p className="privacy-card-subtitle">
-                Controle o que você deseja compartilhar conosco
-              </p>
-            </div>
-          </div>
-
-          <div className="consent-list">
-            <ConsentToggle
-              label="Rastreamento GPS em Tempo Real"
-              description="Necessário para monitoramento de frota e segurança do motorista."
-              enabled={consents.gps}
-              onChange={() => toggleConsent('gps')}
-              critical
-            />
-            
-            <ConsentToggle
-              label="Processamento de Telemetria Avançada"
-              description="Uso de dados de sensores para prever manutenções preventivas."
-              enabled={consents.telemetry}
-              onChange={() => toggleConsent('telemetry')}
-            />
-            
-            <ConsentToggle
-              label="Treinamento de Modelos de IA"
-              description="Contribua anonimamente para a melhoria dos nossos algoritmos de trânsito."
-              enabled={consents.aiAnalysis}
-              onChange={() => toggleConsent('aiAnalysis')}
-            />
-            
-            <ConsentToggle
-              label="Retenção de Dados Estendida"
-              description="Manter dados além do período necessário para melhorar nossos serviços."
-              enabled={consents.dataRetention}
-              onChange={() => toggleConsent('dataRetention')}
-            />
-            
-            <div className="consent-divider">
-              <span className="divider-label">Compartilhamento com Terceiros</span>
-            </div>
-            
-            <ConsentToggle
-              label="Parceiros de Seguros"
-              description="Permitir que parceiros acessem seus dados de segurança para descontos."
-              enabled={consents.sharing}
-              onChange={() => toggleConsent('sharing')}
-            />
-            
-            <ConsentToggle
-              label="Anúncios Personalizados"
-              description="Receba ofertas relevantes baseadas em seus padrões de uso."
-              enabled={consents.marketing}
-              onChange={() => toggleConsent('marketing')}
-            />
-          </div>
-        </motion.div>
-
-        {/* User Rights */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="user-rights-section"
-        >
-          <h2 className="rights-title">Seus Direitos de Privacidade</h2>
-          <p className="rights-subtitle">
-            De acordo com a LGPD e regulamentações internacionais
-          </p>
-          
-          <div className="rights-grid">
-            {userRights.map(right => {
-              const Icon = right.icon;
-              return (
-                <div key={right.id} className="right-card">
-                  <div className="right-icon">
-                    <Icon className="right-icon-svg" />
-                  </div>
-                  <h3 className="right-title">{right.title}</h3>
-                  <p className="right-description">{right.description}</p>
-                  <button className="right-action">
-                    <span>Exercer Direito</span>
-                    <FiChevronRight className="action-icon" />
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </motion.div>
-
-        {/* Data Management */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="data-management-section"
-        >
-          <div className="management-grid">
-            {/* Export Card */}
-            <div className="management-card export-card">
-              <div className="management-card-header">
-                <FiDownload className="management-card-icon" />
-                <h3 className="management-card-title">Exportar Dados</h3>
-              </div>
-              
-              <p className="management-card-description">
-                Baixe uma cópia completa de todas as suas atividades, trajetos e logs de sistema em formato compatível com LGPD.
-              </p>
-              
-              <div className="export-progress">
-                <div className="progress-info">
-                  <span className="progress-label">Preparando exportação...</span>
-                  <span className="progress-value">{exportProgress}%</span>
-                </div>
-                <div className="progress-bar">
-                  <div 
-                    className="progress-fill"
-                    style={{ width: `${exportProgress}%` }}
-                  ></div>
-                </div>
-              </div>
-              
-              <button 
-                onClick={handleExport}
-                disabled={isExporting}
-                className="management-button export-button"
-              >
-                {isExporting ? (
-                  <>
-                    <div className="loading-spinner"></div>
-                    Processando...
-                  </>
-                ) : (
-                  <>
-                    <FiDownload className="button-icon" />
-                    Solicitar Download
-                  </>
-                )}
-              </button>
-            </div>
-
-            {/* Delete Card */}
-            <div className="management-card delete-card">
-              <div className="management-card-header">
-                <FiTrash2 className="management-card-icon delete-icon" />
-                <h3 className="management-card-title">Excluir Conta</h3>
-              </div>
-              
-              <p className="management-card-description delete-description">
-                Esta ação é definitiva. Todos os seus dados serão anonimizados e sua conta será desativada permanentemente.
-              </p>
-              
-              <div className="delete-warning">
-                <FiAlertCircle className="warning-icon" />
-                <span className="warning-text">
-                  Período de carência: 30 dias para cancelar a exclusão
-                </span>
-              </div>
-              
-              <button 
-                onClick={() => setShowDeleteConfirm(true)}
-                className="management-button delete-button"
-              >
-                <FiTrash2 className="button-icon" />
-                Solicitar Exclusão
-              </button>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Legal Support */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="legal-support-section"
-        >
-          <div className="legal-support-overlay"></div>
-          
-          <div className="legal-support-content">
-            <div className="legal-support-info">
-              <h2 className="legal-support-title">Precisa de Ajuda Jurídica?</h2>
-              <p className="legal-support-description">
-                Consulte nossa Política de Privacidade completa ou entre em contato com nosso DPO (Data Protection Officer).
-              </p>
-            </div>
-            
-            <div className="legal-support-actions">
-              <button className="legal-action-button">
-                <FiFileText className="action-button-icon" />
-                Ver Política Completa
-              </button>
-              
-              <button className="legal-action-button legal-action-primary">
-                <FiMail className="action-button-icon" />
-                Falar com DPO
-              </button>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Delete Confirmation Modal */}
-        {showDeleteConfirm && (
-          <div className="modal-overlay">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="delete-confirmation-modal"
-            >
-              <div className="modal-header">
-                <FiAlertCircle className="modal-icon" />
-                <h3 className="modal-title">Confirmar Exclusão de Conta</h3>
-              </div>
-              
-              <div className="modal-content">
-                <p className="modal-warning">
-                  Você está prestes a solicitar a exclusão permanente da sua conta. Esta ação:
-                </p>
-                
-                <ul className="modal-list">
-                  <li>Removerá todos os seus dados pessoais</li>
-                  <li>Cancelará assinaturas ativas</li>
-                  <li>Excluirá histórico de viagens e relatórios</li>
-                  <li>É irreversível após 30 dias</li>
-                </ul>
-                
-                <div className="modal-actions">
-                  <button 
-                    onClick={() => setShowDeleteConfirm(false)}
-                    className="modal-button modal-button-cancel"
-                  >
-                    Cancelar
-                  </button>
-                  
-                  <button 
-                    onClick={handleDeleteAccount}
-                    className="modal-button modal-button-confirm"
-                  >
-                    Confirmar Exclusão
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const ConsentToggle = ({ label, description, enabled, onChange, critical = false }) => {
-  return (
-    <div className="consent-toggle">
-      <div className="toggle-content">
-        <div className="toggle-header">
-          <h4 className="toggle-label">{label}</h4>
-          {critical && (
-            <span className="toggle-critical-badge">
-              <FiAlertCircle size={12} />
-              Essencial
-            </span>
-          )}
         </div>
-        <p className="toggle-description">{description}</p>
+
+        {/* Key Features */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {sections.map((section, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100"
+            >
+              <div className={`w-10 h-10 ${section.color} rounded-xl flex items-center justify-center mb-4`}>
+                <section.icon size={20} />
+              </div>
+              <h3 className="font-bold text-slate-900 mb-2">{section.title}</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">{section.content}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Detailed Sections */}
+        <div className="space-y-6">
+          
+          {/* AI Transparency */}
+          <section className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <Database size={24} className="text-slate-400" />
+                <h2 className="text-xl font-bold text-slate-900">Como usamos seus dados</h2>
+              </div>
+              <div className="space-y-4 text-slate-600 text-sm leading-relaxed">
+                <p>
+                  Para fornecer as melhores otimizações de rota, coletamos e processamos:
+                </p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li><strong>Geolocalização em tempo real:</strong> Para monitoramento e ajuste dinâmico de rotas.</li>
+                  <li><strong>Histórico de viagens:</strong> Para treinar nossa IA em padrões de tráfego específicos da sua região.</li>
+                  <li><strong>Dados de telemetria:</strong> Para análise de eficiência de combustível e comportamento do motorista.</li>
+                </ul>
+                <div className="bg-amber-50 border border-amber-100 p-4 rounded-xl flex gap-3 mt-6">
+                  <Info size={20} className="text-amber-600 flex-shrink-0" />
+                  <p className="text-xs text-amber-800">
+                    <strong>Importante:</strong> Todos os dados usados para treinamento de modelos globais são anonimizados e agregados, impossibilitando a identificação de empresas ou indivíduos específicos.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* User Rights */}
+          <section className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+            <div className="flex items-center gap-3 mb-8">
+              <FileText size={24} className="text-slate-400" />
+              <h2 className="text-xl font-bold text-slate-900">Seus Direitos</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                'Acesso aos seus dados pessoais',
+                'Correção de dados incompletos ou inexatos',
+                'Anonimização ou bloqueio de dados desnecessários',
+                'Portabilidade dos dados a outro fornecedor',
+                'Eliminação dos dados pessoais tratados com consentimento',
+                'Informação sobre compartilhamento com terceiros'
+              ].map((right, i) => (
+                <div key={i} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
+                  <ChevronRight size={16} className="text-indigo-600" />
+                  <span className="text-sm text-slate-700">{right}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Data Management Actions */}
+          <section className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+            <h2 className="text-xl font-bold text-slate-900 mb-6">Gerenciar Meus Dados</h2>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button className="flex-grow flex items-center justify-center gap-2 px-6 py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all">
+                <Download size={20} />
+                Exportar Meus Dados (JSON/CSV)
+              </button>
+              <button className="flex-grow flex items-center justify-center gap-2 px-6 py-4 border border-red-200 text-red-600 font-bold rounded-xl hover:bg-red-50 transition-all">
+                <Trash2 size={20} />
+                Solicitar Exclusão de Conta
+              </button>
+            </div>
+            <p className="text-xs text-slate-400 mt-4 text-center italic">
+              * A exclusão de dados pode levar até 30 dias para ser processada em todos os nossos sistemas de backup.
+            </p>
+          </section>
+
+        </div>
+
+        {/* Footer Info */}
+        <div className="mt-12 text-center text-sm text-slate-500">
+          <p>Última atualização: 15 de Outubro de 2023</p>
+          <div className="mt-4 flex justify-center gap-6">
+            <a href="#" className="hover:text-indigo-600 underline">Termos de Uso</a>
+            <a href="#" className="hover:text-indigo-600 underline">Política de Cookies</a>
+            <a href="#" className="hover:text-indigo-600 underline">Contato DPO</a>
+          </div>
+        </div>
+
       </div>
-      
-      <button
-        onClick={onChange}
-        className={`toggle-switch ${enabled ? 'toggle-switch-enabled' : ''}`}
-        aria-label={`${enabled ? 'Desativar' : 'Ativar'} ${label}`}
-      >
-        <div className="toggle-switch-handle"></div>
-      </button>
     </div>
   );
 };

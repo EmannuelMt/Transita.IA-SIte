@@ -66,9 +66,8 @@ const PremiumNavbar = ({ onLogout }) => {
      { path: '/empresa', label: 'Sobre a Empresa', icon: FiNavigation, description: 'Portal corporativo' },
        {path: '/planos', label: 'Planos & Tokens', icon: FiFileText, description: 'Veja nossos planos de assinatura' },
        { path: '/dashboard', label: 'Dashboard', icon: FiBarChart2, description: 'Analytics em tempo real' },
-       { path: '/register-driver', label: 'Registrar Motorista', icon: FiTruck, description: 'Adicionar novo motorista à frota' },
-       { path: '/employees', label: 'Funcionários', icon: FiBriefcase, description: 'Gestão de funcionários da empresa' },
-       { path: '/multas', label: 'Multas', icon: FiAlertTriangle, description: 'Gestão de multas', badge: 'NOVO' },
+       {path: '/support', label: 'Suporte', icon: FiAlertTriangle, description: 'Central de ajuda e contato' },
+      
   ];
 
   const { user, logout } = useAuth();
@@ -78,7 +77,7 @@ const PremiumNavbar = ({ onLogout }) => {
 
   const menuItems = [
    { icon: FiUser, label: 'Meu Perfil', onClick: () => { navigate('/profile'); closeAll(); } },
-        { icon: FiFileText, label: 'Planos & Pagamentos', onClick: () => { navigate('/billing'); closeAll(); } },
+        { icon: FiFileText, label: 'Faturas', onClick: () => { navigate('/billing'); closeAll(); } },
        { icon: FiTruck, label: 'Meu Operacional', onClick: () => { navigate('/profile/employee'); closeAll(); } },
        { icon: FiBriefcase, label: 'Dados da Empresa', onClick: () => { navigate('/profile/company'); closeAll(); } },
        { icon: FiSettings, label: 'Configurações', onClick: () => { navigate('/settings'); closeAll(); } },

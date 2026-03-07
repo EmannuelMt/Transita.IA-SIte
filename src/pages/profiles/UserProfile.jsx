@@ -1,724 +1,309 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { 
-  FiUser, FiMail, FiShield, FiBell, FiLock, 
-  FiCamera, FiBriefcase, FiMapPin, FiCheckCircle,
-  FiActivity, FiZap, FiEdit3, FiSmartphone, FiMonitor, 
-  FiSave, FiX, FiCalendar, FiTrendingUp, FiAlertCircle,
-  FiShield as FiShieldIcon, FiBell as FiBellIcon, FiGlobe
-} from 'react-icons/fi';
-import './UserProfile.css';
+  User, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Shield, 
+  Bell, 
+  History, 
+  Award, 
+  Camera,
+  Save,
+  LogOut,
+  ChevronRight
+} from 'lucide-react';
+import toast from 'react-hot-toast';
 
-import './UserProfile.css';
-
-const Profile = () => {
+const UserProfile = () => {
   const [activeTab, setActiveTab] = useState('general');
   const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const fileInputRef = useRef(null);
-
   const [userData, setUserData] = useState({
-    name: 'Admin Transita',
-    email: 'admin@transita.ia',
-    role: 'Gerente de Operações',
-    company: 'Logística Avançada S.A.',
-    location: 'São Paulo, Brasil',
-    city: '',
-    state: '',
-    phone: '+55 (11) 99999-8888',
-    department: 'Operações',
-    photoURL: 'https://picsum.photos/200/200',
-    joined: 'Janeiro 2024',
-    employeeId: 'TRN-001'
+    name: 'Manoel Matos',
+    email: 'manoelmatos818@gmail.com',
+    phone: '+55 (11) 98765-4321',
+    location: 'São Paulo, SP',
+    role: 'Gerente de Logística',
+    avatar: 'https://picsum.photos/seed/user/200/200'
   });
-
-  const { user: authUser } = useAuth();
-
-  // Mapear dados do backend (AuthContext) para o estado local do perfil
-  useEffect(() => {
-    if (!authUser) return;
-
-    try {
-      setUserData(prev => ({
-        ...prev,
-        name: authUser.name || authUser.email || prev.name,
-        email: authUser.email || prev.email,
-        photoURL: authUser.photoURL || prev.photoURL,
-        role: authUser.role || prev.role,
-        company: (authUser.company && authUser.company.name) ? authUser.company.name : (authUser.company || prev.company),
-        city: authUser.city || prev.city,
-        state: authUser.state || prev.state,
-      }));
-    } catch (e) {
-      // não bloquear a UI se formato inesperado
-    }
-  }, [authUser]);
-
-  // Busca geolocalização por IP (usa ipapi como exemplo) para obter cidade/estado
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchLocation = async () => {
-      try {
-        const resp = await fetch('https://ipapi.co/json/');
-        if (!resp.ok) return;
-        const data = await resp.json();
-        if (!mounted) return;
-
-        const city = data.city || '';
-        const region = data.region || data.region_code || '';
-        const locationString = city && region ? `${city}, ${region}` : (data.city || data.region || data.country_name || '');
-
-        setUserData(prev => ({
-          ...prev,
-          location: locationString,
-          city,
-          state: region
-        }));
-      } catch (error) {
-        // falhar silenciosamente - front não deve quebrar se API bloquear
-      }
-    };
-
-    fetchLocation();
-
-    return () => { mounted = false; };
-  }, []);
-
-  // Extração simples de cidade a partir de userData.location
-  const getCity = () => {
-    if (userData.city) return userData.city;
-    const loc = userData.location || '';
-    if (!loc) return '';
-    // se tem vírgula, a primeira parte costuma ser cidade
-    if (loc.includes(',')) return loc.split(',')[0].trim();
-    // se tem espaço e duas palavras, retorna primeira palavra (fallback)
-    const parts = loc.split(' ');
-    return parts.length ? parts[0] : loc;
-  };
-
-  const [notificationSettings, setNotificationSettings] = useState({
-    fines: true,
-    reports: true,
-    maintenance: false,
-    security: true,
-    weeklyDigest: true,
-    realTimeAlerts: true
-  });
-
-  const handlePhotoUpload = (event) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setIsUploading(true);
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const dataUrl = reader.result;
-        try {
-          // Send DataURL to backend which will upload to Firebase Storage
-          const resp = await api.post('/auth/profile/avatar', { dataUrl });
-          if (resp?.data?.url) {
-            setUserData(prev => ({ ...prev, photoURL: resp.data.url }));
-          } else {
-            // fallback to local dataUrl
-            setUserData(prev => ({ ...prev, photoURL: dataUrl }));
-          }
-        } catch (error) {
-          console.error('Erro ao enviar avatar para backend:', error);
-          setUserData(prev => ({ ...prev, photoURL: dataUrl }));
-        } finally {
-          setIsUploading(false);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleSave = () => {
-    setIsSaving(true);
-    (async () => {
-      try {
-        const payload = {
-          name: userData.name,
-          phone: userData.phone,
-          role: userData.role,
-          photoURL: userData.photoURL,
-          location: userData.location
-        };
-
-        const res = await api.put('/auth/profile', payload);
-        if (res?.data) {
-          // Atualiza local state e solicita refresh no contexto
-          setUserData(prev => ({ ...prev, ...payload }));
-          // refresh global
-          try { await refreshUser(); } catch (_) {}
-        }
-        setIsEditing(false);
-      } catch (error) {
-        console.error('Erro ao salvar perfil:', error);
-      } finally {
-        setIsSaving(false);
-      }
-    })();
-  };
-
-  const handleCancel = () => {
-    // Em uma aplicação real, aqui reverteria as alterações
     setIsEditing(false);
+    toast.success('Perfil atualizado com sucesso!');
   };
 
-  const loginHistory = [
-    { id: 1, device: 'Desktop Windows', deviceType: 'desktop', location: 'São Paulo, BR', date: 'Hoje, 09:42', time: 'há 2 horas', ip: '189.12.45.102', status: 'current' },
-    { id: 2, device: 'iPhone 15 Pro', deviceType: 'mobile', location: 'São Paulo, BR', date: 'Ontem, 18:20', time: 'há 1 dia', ip: '189.12.45.102', status: 'active' },
-    { id: 3, device: 'MacBook Pro', deviceType: 'desktop', location: 'Rio de Janeiro, BR', date: '12 Out, 10:15', time: 'há 5 dias', ip: '201.45.12.88', status: 'active' },
+  const tabs = [
+    { id: 'general', label: 'Geral', icon: User },
+    { id: 'security', label: 'Segurança', icon: Shield },
+    { id: 'notifications', label: 'Notificações', icon: Bell },
+    { id: 'activity', label: 'Atividade', icon: History },
+    { id: 'achievements', label: 'Conquistas', icon: Award },
   ];
-
-  const recentActivity = [
-    { id: 1, type: 'report', title: 'Relatório Mensal Gerado', description: 'Relatório de performance da frota disponível para download', time: 'Há 2 horas', icon: FiCheckCircle, color: 'activity-success' },
-    { id: 2, type: 'security', title: 'Senha Alterada', description: 'Senha da conta atualizada com sucesso', time: 'Há 2 dias', icon: FiLock, color: 'activity-security' },
-    { id: 3, type: 'login', title: 'Novo Login Detectado', description: 'Acesso realizado a partir de dispositivo não reconhecido', time: 'Há 3 dias', icon: FiShieldIcon, color: 'activity-warning' },
-  ];
-
-  const stats = {
-    reportsGenerated: 124,
-    efficiencyRate: 98,
-    activeSessions: 3,
-    daysActive: 45
-  };
-
-  const achievements = [
-    { id: 1, name: 'Analista Pro', color: 'achievement-blue', icon: '🎯' },
-    { id: 2, name: 'Beta Tester', color: 'achievement-green', icon: '🧪' },
-    { id: 3, name: 'Primeiro Mês', color: 'achievement-purple', icon: '🥇' },
-    { id: 4, name: '100 Relatórios', color: 'achievement-orange', icon: '📊' },
-  ];
-
-  const handleNotificationToggle = (setting) => {
-    setNotificationSettings(prev => ({
-      ...prev,
-      [setting]: !prev[setting]
-    }));
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { 
-        duration: 0.5,
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.4 }
-    }
-  };
 
   return (
-    <div className="user-profile-page profile-page">
-      {/* Header com Cover */}
-      <div className="profile-cover">
-        <div className="profile-cover-overlay"></div>
-      </div>
-
-      <motion.div 
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="profile-container"
-      >
-        {/* Input de arquivo oculto */}
-        <input 
-          type="file" 
-          ref={fileInputRef} 
-          onChange={handlePhotoUpload} 
-          className="profile-file-input" 
-          accept="image/*"
-        />
-        
-        <div className="profile-grid">
-          {/* Coluna Esquerda: Perfil e Stats */}
-          <div className="profile-sidebar">
-            {/* Card de Perfil */}
-            <motion.div 
-              variants={itemVariants}
-              className="profile-card"
-            >
-              <div className="profile-avatar-section">
-                <div className="profile-avatar-container">
+    <div className="pt-24 pb-12 min-h-screen bg-slate-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row gap-8">
+          
+          {/* Sidebar */}
+          <div className="w-full md:w-64 flex-shrink-0">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+              <div className="p-6 flex flex-col items-center border-bottom border-slate-100">
+                <div className="relative group">
                   <img 
-                    src={userData.photoURL} 
-                    alt={userData.name}
-                    className="profile-avatar"
+                    src={userData.avatar} 
+                    alt="Avatar" 
+                    className="w-24 h-24 rounded-full object-cover border-4 border-slate-50 shadow-sm"
+                    referrerPolicy="no-referrer"
                   />
-                  {isUploading && (
-                    <div className="profile-uploading-overlay">
-                      <div className="uploading-spinner"></div>
-                    </div>
-                  )}
-                  <button 
-                    onClick={() => fileInputRef.current?.click()}
-                    className="profile-avatar-edit"
-                    disabled={isUploading}
-                  >
-                    <FiCamera size={16} />
+                  <button className="absolute bottom-0 right-0 p-1.5 bg-primary-600 text-white rounded-full shadow-lg hover:bg-primary-700 transition-colors">
+                    <Camera size={14} />
                   </button>
                 </div>
-                <div className="profile-info">
-                  <h2 className="profile-name">{userData.name}</h2>
-                  <div className="profile-role">{userData.role}</div>
-                  <div className="profile-badge">
-                    <FiTrendingUp size={12} />
-                    <span>Premium</span>
-                  </div>
-                </div>
+                <h2 className="mt-4 text-lg font-bold text-slate-900">{userData.name}</h2>
+                <p className="text-sm text-slate-500">{userData.role}</p>
               </div>
-
-              {/* Informações de Contato */}
-              <div className="profile-contact-info">
-                <div className="contact-item">
-                  <FiBriefcase className="contact-icon" />
-                  <div className="contact-content">
-                    <span className="contact-label">Empresa</span>
-                    <span className="contact-value">{userData.company}</span>
-                  </div>
-                </div>
-                <div className="contact-item">
-                  <FiMapPin className="contact-icon" />
-                  <div className="contact-content">
-                    <span className="contact-label">Localização</span>
-                    <span className="contact-value">{userData.location}</span>
-                  </div>
-                </div>
-                <div className="contact-item">
-                  <FiGlobe className="contact-icon" />
-                  <div className="contact-content">
-                    <span className="contact-label">Cidade</span>
-                    <span className="contact-value">{getCity()}</span>
-                  </div>
-                </div>
-                <div className="contact-item">
-                  <FiMail className="contact-icon" />
-                  <div className="contact-content">
-                    <span className="contact-label">Email</span>
-                    <span className="contact-value">{userData.email}</span>
-                  </div>
-                </div>
-                <div className="contact-item">
-                  <FiCalendar className="contact-icon" />
-                  <div className="contact-content">
-                    <span className="contact-label">Desde</span>
-                    <span className="contact-value">{userData.joined}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Stats Grid */}
-              <div className="profile-stats">
-                <div className="stat-item">
-                  <div className="stat-number">{stats.reportsGenerated}</div>
-                  <div className="stat-label">Relatórios</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number">{stats.efficiencyRate}%</div>
-                  <div className="stat-label">Eficiência</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number">{stats.activeSessions}</div>
-                  <div className="stat-label">Sessões</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number">{stats.daysActive}</div>
-                  <div className="stat-label">Dias</div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Conquistas */}
-            <motion.div 
-              variants={itemVariants}
-              className="achievements-card"
-            >
-              <div className="achievements-header">
-                <FiZap className="achievements-icon" />
-                <h3 className="achievements-title">Conquistas</h3>
-              </div>
-              <div className="achievements-list">
-                {achievements.map(achievement => (
-                  <div 
-                    key={achievement.id}
-                    className={`achievement-item ${achievement.color}`}
+              
+              <nav className="p-2">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                      activeTab === tab.id 
+                        ? 'bg-primary-50 text-primary-600' 
+                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    }`}
                   >
-                    <span className="achievement-emoji">{achievement.icon}</span>
-                    <span className="achievement-name">{achievement.name}</span>
-                  </div>
+                    <tab.icon size={18} />
+                    {tab.label}
+                    {activeTab === tab.id && <ChevronRight size={14} className="ml-auto" />}
+                  </button>
                 ))}
-              </div>
-            </motion.div>
+                <div className="my-2 border-t border-slate-100"></div>
+                <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-all">
+                  <LogOut size={18} />
+                  Sair da Conta
+                </button>
+              </nav>
+            </div>
           </div>
 
-          {/* Coluna Direita: Conteúdo Principal */}
-          <div className="profile-content">
-            {/* Card Principal com Tabs */}
-            <motion.div 
-              variants={itemVariants}
-              className="profile-main-card"
+          {/* Main Content */}
+          <div className="flex-grow">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8"
             >
-              {/* Tabs Navigation */}
-              <div className="profile-tabs">
-                {[
-                  { id: 'general', label: 'Geral', icon: FiUser },
-                  { id: 'security', label: 'Segurança', icon: FiShield },
-                  { id: 'notifications', label: 'Notificações', icon: FiBell },
-                  { id: 'activity', label: 'Atividade', icon: FiActivity }
-                ].map(tab => {
-                  const Icon = tab.icon;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`profile-tab ${activeTab === tab.id ? 'profile-tab-active' : ''}`}
-                    >
-                      <Icon className="profile-tab-icon" />
-                      <span>{tab.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
+              {activeTab === 'general' && (
+                <div>
+                  <div className="flex justify-between items-center mb-8">
+                    <h3 className="text-xl font-bold text-slate-900">Informações Gerais</h3>
+                    {!isEditing ? (
+                      <button 
+                        onClick={() => setIsEditing(true)}
+                        className="px-4 py-2 text-sm font-medium text-primary-600 border border-primary-200 rounded-lg hover:bg-primary-50 transition-colors"
+                      >
+                        Editar Perfil
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={handleSave}
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors"
+                      >
+                        <Save size={16} />
+                        Salvar Alterações
+                      </button>
+                    )}
+                  </div>
 
-              {/* Tab Content */}
-              <div className="profile-tab-content">
-                <AnimatePresence mode="wait">
-                  {activeTab === 'general' && (
-                    <motion.div
-                      key="general"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      className="profile-tab-pane"
-                    >
-                      <div className="tab-pane-header">
-                        <h3 className="tab-pane-title">Informações do Perfil</h3>
-                        <div className="tab-pane-actions">
-                          {!isEditing ? (
-                            <button 
-                              onClick={() => setIsEditing(true)}
-                              className="edit-profile-button"
-                            >
-                              <FiEdit3 size={14} />
-                              <span>Editar Perfil</span>
-                            </button>
-                          ) : (
-                            <>
-                              <button 
-                                onClick={handleCancel}
-                                className="cancel-button"
-                              >
-                                <FiX size={14} />
-                                <span>Cancelar</span>
-                              </button>
-                              <button 
-                                onClick={handleSave}
-                                disabled={isSaving}
-                                className="save-button"
-                              >
-                                {isSaving ? (
-                                  <div className="loading-spinner"></div>
-                                ) : (
-                                  <FiSave size={14} />
-                                )}
-                                <span>Salvar Alterações</span>
-                              </button>
-                            </>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="profile-form">
-                        <div className="form-grid">
-                          <div className="form-group">
-                            <label className="form-label">Nome Completo</label>
-                            <input 
-                              type="text" 
-                              value={userData.name}
-                              onChange={(e) => setUserData({...userData, name: e.target.value})}
-                              disabled={!isEditing}
-                              className={`form-input ${isEditing ? 'form-input-editing' : ''}`}
-                            />
-                          </div>
-                          <div className="form-group">
-                            <label className="form-label">Cargo</label>
-                            <input 
-                              type="text" 
-                              value={userData.role}
-                              onChange={(e) => setUserData({...userData, role: e.target.value})}
-                              disabled={!isEditing}
-                              className={`form-input ${isEditing ? 'form-input-editing' : ''}`}
-                            />
-                          </div>
-                          <div className="form-group">
-                            <label className="form-label">Email</label>
-                            <input 
-                              type="email" 
-                              value={userData.email}
-                              onChange={(e) => setUserData({...userData, email: e.target.value})}
-                              disabled={!isEditing}
-                              className={`form-input ${isEditing ? 'form-input-editing' : ''}`}
-                            />
-                          </div>
-                          <div className="form-group">
-                            <label className="form-label">Telefone</label>
-                            <input 
-                              type="tel" 
-                              value={userData.phone}
-                              onChange={(e) => setUserData({...userData, phone: e.target.value})}
-                              disabled={!isEditing}
-                              className={`form-input ${isEditing ? 'form-input-editing' : ''}`}
-                            />
-                          </div>
-                          <div className="form-group form-group-full">
-                            <label className="form-label">Localização</label>
-                            <input 
-                              type="text" 
-                              value={userData.location}
-                              onChange={(e) => setUserData({...userData, location: e.target.value})}
-                              disabled={!isEditing}
-                              className={`form-input ${isEditing ? 'form-input-editing' : ''}`}
-                            />
-                          </div>
-                        </div>
-
-                        {/* Atividade Recente */}
-                        <div className="recent-activity-section">
-                          <h4 className="section-title">Atividade Recente</h4>
-                          <div className="activity-list">
-                            {recentActivity.map(activity => {
-                              const Icon = activity.icon;
-                              return (
-                                <div key={activity.id} className="activity-item">
-                                  <div className={`activity-icon ${activity.color}`}>
-                                    <Icon size={18} />
-                                  </div>
-                                  <div className="activity-content">
-                                    <div className="activity-title">{activity.title}</div>
-                                    <div className="activity-description">{activity.description}</div>
-                                  </div>
-                                  <div className="activity-time">{activity.time}</div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {activeTab === 'security' && (
-                    <motion.div
-                      key="security"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      className="profile-tab-pane"
-                    >
-                      <div className="security-overview">
-                        <div className="security-icon">
-                          <FiShield size={32} />
-                        </div>
-                        <div className="security-info">
-                          <h3 className="security-title">Sua Conta Está Protegida</h3>
-                          <p className="security-description">
-                            Última alteração de senha: Há 15 dias. Recomendamos trocar a cada 90 dias para máxima segurança.
-                          </p>
-                        </div>
-                        <button className="change-password-button">
-                          Alterar Senha
-                        </button>
-                      </div>
-
-                      <div className="login-history-section">
-                        <h4 className="section-title">Histórico de Logins</h4>
-                        <div className="login-history">
-                          {loginHistory.map(login => (
-                            <div key={login.id} className="login-item">
-                              <div className="login-device-info">
-                                <div className={`login-device-icon ${login.deviceType}`}>
-                                  {login.deviceType === 'desktop' ? <FiMonitor size={18} /> : <FiSmartphone size={18} />}
-                                </div>
-                                <div>
-                                  <div className="login-device-name">{login.device}</div>
-                                  <div className="login-details">
-                                    <span className="login-location">{login.location}</span>
-                                    <span className="login-ip">{login.ip}</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="login-time-info">
-                                <div className="login-date">{login.date}</div>
-                                <div className="login-time">{login.time}</div>
-                                <div className={`login-status ${login.status}`}>
-                                  {login.status === 'current' ? 'Atual' : 'Ativo'}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {activeTab === 'notifications' && (
-                    <motion.div
-                      key="notifications"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      className="profile-tab-pane"
-                    >
-                      <h3 className="tab-pane-title">Configurações de Notificação</h3>
-                      <p className="tab-pane-subtitle">
-                        Gerencie como e quando você deseja ser notificado sobre atividades do sistema.
-                      </p>
-
-                      <div className="notification-settings">
-                        <NotificationToggle
-                          title="Alertas de Multas"
-                          description="Receba avisos instantâneos quando novas multas forem detectadas."
-                          enabled={notificationSettings.fines}
-                          onToggle={() => handleNotificationToggle('fines')}
-                          critical
-                        />
-                        <NotificationToggle
-                          title="Alertas em Tempo Real"
-                          description="Notificações imediatas sobre atividades críticas do sistema."
-                          enabled={notificationSettings.realTimeAlerts}
-                          onToggle={() => handleNotificationToggle('realTimeAlerts')}
-                          critical
-                        />
-                        <NotificationToggle
-                          title="Relatórios Semanais"
-                          description="Resumo de performance da frota enviado toda segunda-feira por email."
-                          enabled={notificationSettings.weeklyDigest}
-                          onToggle={() => handleNotificationToggle('weeklyDigest')}
-                        />
-                        <NotificationToggle
-                          title="Manutenção Preventiva"
-                          description="Avisos sobre veículos que necessitam de revisão."
-                          enabled={notificationSettings.maintenance}
-                          onToggle={() => handleNotificationToggle('maintenance')}
-                        />
-                        <NotificationToggle
-                          title="Alertas de Segurança"
-                          description="Notificações sobre logins suspeitos e atividades de segurança."
-                          enabled={notificationSettings.security}
-                          onToggle={() => handleNotificationToggle('security')}
-                          critical
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-slate-700">Nome Completo</label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                        <input 
+                          type="text" 
+                          disabled={!isEditing}
+                          value={userData.name}
+                          onChange={(e) => setUserData({...userData, name: e.target.value})}
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-60 transition-all"
                         />
                       </div>
-                    </motion.div>
-                  )}
+                    </div>
 
-                  {activeTab === 'activity' && (
-                    <motion.div
-                      key="activity"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      className="profile-tab-pane"
-                    >
-                      <div className="activity-overview">
-                        <h3 className="tab-pane-title">Visão Geral da Atividade</h3>
-                        <p className="tab-pane-subtitle">
-                          Histórico completo de todas as suas interações com o sistema.
-                        </p>
-
-                        {/* Activity Stats */}
-                        <div className="activity-stats">
-                          <div className="activity-stat">
-                            <div className="activity-stat-number">{stats.reportsGenerated}</div>
-                            <div className="activity-stat-label">Relatórios Criados</div>
-                          </div>
-                          <div className="activity-stat">
-                            <div className="activity-stat-number">{stats.daysActive}</div>
-                            <div className="activity-stat-label">Dias Ativo</div>
-                          </div>
-                          <div className="activity-stat">
-                            <div className="activity-stat-number">{stats.activeSessions}</div>
-                            <div className="activity-stat-label">Sessões Ativas</div>
-                          </div>
-                        </div>
-
-                        {/* Activity Timeline */}
-                        <div className="activity-timeline">
-                          <h4 className="section-title">Linha do Tempo</h4>
-                          <div className="timeline">
-                            {recentActivity.map((activity, index) => {
-                              const Icon = activity.icon;
-                              return (
-                                <div key={activity.id} className="timeline-item">
-                                  <div className="timeline-marker">
-                                    <div className={`timeline-icon ${activity.color}`}>
-                                      <Icon size={14} />
-                                    </div>
-                                    {index < recentActivity.length - 1 && (
-                                      <div className="timeline-line"></div>
-                                    )}
-                                  </div>
-                                  <div className="timeline-content">
-                                    <div className="timeline-title">{activity.title}</div>
-                                    <div className="timeline-description">{activity.description}</div>
-                                    <div className="timeline-time">{activity.time}</div>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-slate-700">E-mail</label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                        <input 
+                          type="email" 
+                          disabled={!isEditing}
+                          value={userData.email}
+                          onChange={(e) => setUserData({...userData, email: e.target.value})}
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-60 transition-all"
+                        />
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-slate-700">Telefone</label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                        <input 
+                          type="text" 
+                          disabled={!isEditing}
+                          value={userData.phone}
+                          onChange={(e) => setUserData({...userData, phone: e.target.value})}
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-60 transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-slate-700">Localização</label>
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                        <input 
+                          type="text" 
+                          disabled={!isEditing}
+                          value={userData.location}
+                          onChange={(e) => setUserData({...userData, location: e.target.value})}
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-60 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-10 pt-10 border-t border-slate-100">
+                    <h4 className="text-lg font-bold text-slate-900 mb-4">Estatísticas da Conta</h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      {[
+                        { label: 'Viagens', value: '124' },
+                        { label: 'Eficiência', value: '98%' },
+                        { label: 'Tokens', value: '2.5k' },
+                        { label: 'Nível', value: '12' },
+                      ].map((stat, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-2xl text-center">
+                          <p className="text-2xl font-bold text-primary-600">{stat.value}</p>
+                          <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">{stat.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'security' && (
+                <div className="space-y-8">
+                  <h3 className="text-xl font-bold text-slate-900">Segurança</h3>
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+                      <div>
+                        <p className="font-bold text-slate-900">Autenticação em Duas Etapas</p>
+                        <p className="text-sm text-slate-500">Adicione uma camada extra de segurança à sua conta.</p>
+                      </div>
+                      <div className="w-12 h-6 bg-primary-600 rounded-full relative cursor-pointer">
+                        <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                      </div>
+                    </div>
+                    
+                    <div className="p-6 border border-slate-200 rounded-2xl space-y-4">
+                      <p className="font-bold text-slate-900">Alterar Senha</p>
+                      <div className="grid grid-cols-1 gap-4">
+                        <input type="password" placeholder="Senha Atual" className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl" />
+                        <input type="password" placeholder="Nova Senha" className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl" />
+                        <input type="password" placeholder="Confirmar Nova Senha" className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl" />
+                      </div>
+                      <button className="px-6 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors">
+                        Atualizar Senha
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'notifications' && (
+                <div className="space-y-6">
+                  <h3 className="text-xl font-bold text-slate-900">Preferências de Notificação</h3>
+                  <div className="space-y-4">
+                    {[
+                      { title: 'Alertas de Rota', desc: 'Receba avisos sobre atrasos ou mudanças nas rotas.' },
+                      { title: 'Relatórios Semanais', desc: 'Resumo de desempenho e economia de combustível.' },
+                      { title: 'Atualizações de Sistema', desc: 'Novas funcionalidades e melhorias na plataforma.' },
+                      { title: 'Mensagens de Suporte', desc: 'Respostas aos seus tickets de atendimento.' },
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center justify-between py-4 border-b border-slate-100 last:border-0">
+                        <div>
+                          <p className="font-bold text-slate-900">{item.title}</p>
+                          <p className="text-sm text-slate-500">{item.desc}</p>
+                        </div>
+                        <input type="checkbox" defaultChecked className="w-5 h-5 accent-primary-600" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'activity' && (
+                <div className="space-y-6">
+                  <h3 className="text-xl font-bold text-slate-900">Histórico de Login</h3>
+                  <div className="space-y-4">
+                    {[
+                      { device: 'Chrome / MacOS', location: 'São Paulo, Brasil', time: 'Hoje, 14:20', status: 'Atual' },
+                      { device: 'App Mobile / iPhone 13', location: 'São Paulo, Brasil', time: 'Ontem, 09:15', status: 'Sucesso' },
+                      { device: 'Safari / iPad', location: 'Rio de Janeiro, Brasil', time: '12 Out, 18:45', status: 'Sucesso' },
+                    ].map((log, i) => (
+                      <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
+                            <History size={20} className="text-slate-400" />
+                          </div>
+                          <div>
+                            <p className="font-bold text-slate-900">{log.device}</p>
+                            <p className="text-xs text-slate-500">{log.location} • {log.time}</p>
+                          </div>
+                        </div>
+                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${log.status === 'Atual' ? 'bg-green-100 text-green-700' : 'bg-slate-200 text-slate-600'}`}>
+                          {log.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'achievements' && (
+                <div className="space-y-6">
+                  <h3 className="text-xl font-bold text-slate-900">Minhas Conquistas</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+                    {[
+                      { title: 'Eco-Driver', desc: '1.000km com baixo consumo', icon: '🌱', color: 'bg-emerald-50' },
+                      { title: 'Pontual', desc: '50 entregas no horário', icon: '⏱️', color: 'bg-amber-50' },
+                      { title: 'Expert', desc: '1 ano de plataforma', icon: '🏆', color: 'bg-primary-50' },
+                      { title: 'Seguro', desc: 'Zero infrações no mês', icon: '🛡️', color: 'bg-blue-50' },
+                      { title: 'Noturno', desc: '10 viagens à noite', icon: '🌙', color: 'bg-slate-50' },
+                      { title: 'Social', desc: 'Indicou 5 amigos', icon: '🤝', color: 'bg-rose-50' },
+                    ].map((badge, i) => (
+                      <div key={i} className={`${badge.color} p-6 rounded-3xl text-center border border-white shadow-sm hover:scale-105 transition-transform cursor-default`}>
+                        <span className="text-4xl mb-3 block">{badge.icon}</span>
+                        <p className="font-bold text-slate-900">{badge.title}</p>
+                        <p className="text-xs text-slate-500 mt-1">{badge.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </motion.div>
           </div>
         </div>
-      </motion.div>
-    </div>
-  );
-};
-
-const NotificationToggle = ({ title, description, enabled, onToggle, critical = false }) => {
-  return (
-    <div className="notification-toggle">
-      <div className="toggle-content">
-        <div className="toggle-header">
-          <h4 className="toggle-title">{title}</h4>
-          {critical && (
-            <span className="toggle-critical-badge">
-              <FiAlertCircle size={12} />
-              Crítico
-            </span>
-          )}
-        </div>
-        <p className="toggle-description">{description}</p>
       </div>
-      <button 
-        onClick={onToggle}
-        className={`toggle-switch ${enabled ? 'toggle-switch-enabled' : ''}`}
-        aria-label={`${enabled ? 'Desativar' : 'Ativar'} ${title}`}
-      >
-        <div className="toggle-switch-handle"></div>
-      </button>
     </div>
   );
 };
 
-export default Profile;
+export default UserProfile;

@@ -59,8 +59,6 @@ export const AuthProvider = ({ children }) => {
             const res = await firebaseLoginWithGoogle();
             if (!res || !res.user) throw new Error('Falha ao autenticar com Google (fluxo cliente)');
 
-            // Trocar ID token do Google no backend para receber JWT da aplicação
-            // O loginWithGoogle do cliente agora retorna `idToken` quando possível
             const idToken = res.idToken;
             if (!idToken) {
                 // se não veio idToken, tentar obter do user (mas este pode ser um Firebase ID token)
@@ -94,17 +92,42 @@ export const AuthProvider = ({ children }) => {
     const loginWithEmail = async (email, password) => {
         setLoading(true);
         try {
+            console.log('[AuthContext] loginWithEmail request', { email });
             const resp = await api.post('/auth/login', { email, password });
+            console.log('[AuthContext] loginWithEmail response', resp?.data);
             if (resp?.data?.token) {
                 localStorage.setItem('token', resp.data.token);
                 setUser(normalizeUser(resp.data.user || resp.data));
                 return resp.data;
             }
-            throw new Error(resp?.data?.error || 'Falha no login');
+            const errMsg = resp?.data?.error || 'Falha no login';
+            console.warn('[AuthContext] loginWithEmail - resposta sem token', resp?.data);
+            throw new Error(errMsg);
         } catch (err) {
+            // Melhorar mensagem de erro para o frontend quando for um erro Axios
+            if (err?.response?.data?.error) {
+                const msg = err.response.data.error;
+                console.error('[AuthContext] loginWithEmail error (backend):', msg);
+                throw new Error(msg);
+            }
+            console.error('[AuthContext] loginWithEmail error:', err?.message || err);
             throw err;
         } finally {
             setLoading(false);
+        }
+    };
+
+    const updateUser = async (updates) => {
+        try {
+            const res = await api.put('/auth/profile', updates);
+            if (res?.data) {
+                setUser(normalizeUser(res.data));
+                return res.data;
+            }
+            return null;
+        } catch (err) {
+            console.error('updateUser failed:', err);
+            throw err;
         }
     };
 
@@ -145,13 +168,14 @@ export const AuthProvider = ({ children }) => {
         userClaims,
         loginWithGoogle,
         loginWithEmail,
+        updateUser,
         logout: logoutUser,
         refreshUser
     };
 
     return (
         <AuthContext.Provider value={value}>
-            {!loading && children}
+            {children}
         </AuthContext.Provider>
     );
 };

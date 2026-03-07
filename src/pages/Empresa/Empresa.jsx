@@ -1,854 +1,381 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, useInView, useAnimation, AnimatePresence } from 'framer-motion';
-import Anime from 'react-anime';
-import { 
-  FiArrowRight, 
-  FiCheck, 
-  FiMap, 
-  FiClock, 
-  FiTrendingUp,
-  FiMail,
-  FiPhone,
-  FiClock as FiClockIcon,
-  FiMenu,
-  FiX,
-  FiLinkedin,
-  FiInstagram,
-  FiTwitter
-} from 'react-icons/fi';
-import { 
-  FaTruck, 
-  FaRobot, 
-  FaChartLine, 
-  FaShieldAlt,
-  FaWhatsapp 
-} from 'react-icons/fa';
-import { 
-  BsGraphUp, 
-  BsPeople, 
-  BsBuilding,
-  BsGeoAlt 
-} from 'react-icons/bs';
-import { 
-  MdOutlineSupportAgent,
-  MdOutlineDashboard 
-} from 'react-icons/md';
-import { TbDeviceAnalytics } from 'react-icons/tb';
-import CountUp from 'react-countup';
-import { useInView as useInViewLib } from 'react-intersection-observer';
+import React from 'react';
+import { motion } from 'motion/react';
 import Lottie from 'lottie-react';
-import { toast, Toaster } from 'react-hot-toast';
-import './Empresa.scss';
-import phoneImg from '../../assets/empresa/logobobre.png';
-import logo from '../../assets/images/Logo/logo.svg';
-import animationData from '../../assets/animations/truck-loading.json'; // Exemplo de animação
+import CountUp from 'react-countup';
+import './Empresa.css';
+import logoBanner from '../../assets/images/Logo/logo.svg';
+import { 
+  Users, 
+  Target, 
+  Lightbulb, 
+  Globe, 
+  Award, 
+  TrendingUp,
+  MapPin,
+  Mail,
+  Phone,
+  Linkedin,
+  Twitter,
+  Instagram
+} from 'lucide-react';
 
-const TEAM = [
-  { 
-    name: 'Mariana Silva', 
-    role: 'CEO & Co-fundadora',
-    bio: 'Ex-McKinsey, especialista em supply chain com passagem pela Amazon',
-    icon: <BsPeople />,
-    color: '#16a34a'
-  },
-  { 
-    name: 'Carlos Pereira', 
-    role: 'CTO & Co-fundador',
-    bio: 'PhD em IA pela Stanford, ex-Google AI Research',
-    icon: <FaRobot />,
-    color: '#0f9d58'
-  },
-  { 
-    name: 'Ana Gomes', 
-    role: 'Head de Operações',
-    bio: '10+ anos em logística na Ambev e Magazine Luiza',
-    icon: <TbDeviceAnalytics />,
-    color: '#86efac'
-  },
-];
-
-const INVESTORS = [
-  { name: 'Fundo Alpha', type: 'Série A', amount: 'R$ 50M', icon: <BsGraphUp /> },
-  { name: 'CapLog', type: 'Venture Capital', amount: 'R$ 30M', icon: <BsBuilding /> },
-  { name: 'Green Ventures', type: 'Impacto', amount: 'R$ 20M', icon: <FaShieldAlt /> },
-];
-
-const OFFICES = [
-  { 
-    city: 'São Paulo', 
-    address: 'Av. Paulista, 1000', 
-    coords: '-23.561, -46.655', 
-    region: 'Sudeste',
-    icon: <BsGeoAlt />
-  },
-  { 
-    city: 'Porto Alegre', 
-    address: 'Rua da Logística, 45', 
-    coords: '-30.027, -51.228', 
-    region: 'Sul',
-    icon: <BsGeoAlt />
-  },
-  { 
-    city: 'Recife', 
-    address: 'Av. Nordeste, 210', 
-    coords: '-8.047, -34.877', 
-    region: 'Nordeste',
-    icon: <BsGeoAlt />
-  },
-];
-
-const FEATURES = [
-  {
-    icon: <FaTruck />,
-    title: 'Roteirização Dinâmica',
-    description: 'Otimização em tempo real considerando trânsito, entregas e restrições',
-    stats: '+40% eficiência'
-  },
-  {
-    icon: <MdOutlineDashboard />,
-    title: 'Monitoramento em Tempo Real',
-    description: 'Acompanhe sua frota com atualizações a cada 5 segundos',
-    stats: '99.9% uptime'
-  },
-  {
-    icon: <TbDeviceAnalytics />,
-    title: 'Análise Preditiva',
-    description: 'Preveja demandas e evite gargalos com machine learning',
-    stats: '95% precisão'
-  },
-  {
-    icon: <FaShieldAlt />,
-    title: 'Segurança Avançada',
-    description: 'Criptografia de ponta a ponta e conformidade com LGPD',
-    stats: 'ISO 27001'
-  }
-];
-
-const TESTIMONIALS = [
-  {
-    name: 'João Silva',
-    role: 'Diretor de Logística - Magazine Luiza',
-    content: 'Reduzimos nossos custos em 35% no primeiro trimestre usando a Transita.IA.',
-    rating: 5
-  },
-  {
-    name: 'Maria Santos',
-    role: 'COO - AMBEV',
-    content: 'A integração foi rápida e o suporte é excepcional. Recomendo fortemente.',
-    rating: 5
-  }
-];
+// Mock Lottie animation data (placeholder)
+const animationData = {
+  v: "5.5.7",
+  fr: 60,
+  ip: 0,
+  op: 60,
+  w: 500,
+  h: 500,
+  nm: "Logistics",
+  ddd: 0,
+  assets: [],
+  layers: []
+};
 
 const Empresa = () => {
-  const [heroExited, setHeroExited] = useState(false);
-  const [formStatus, setFormStatus] = useState('idle');
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
-  
-  const aboutRef = useRef(null);
-  const contatoRef = useRef(null);
-  const heroRef = useRef(null);
-  const featuresRef = useRef(null);
-  
-  const controls = useAnimation();
-  const [featuresRefInView, featuresInView] = useInViewLib({ threshold: 0.3 });
+  const stats = [
+    { label: 'Clientes Ativos', value: 500, suffix: '+' },
+    { label: 'Rotas Otimizadas', value: 10, suffix: 'M+' },
+    { label: 'Economia Gerada', value: 150, suffix: 'M+' },
+    { label: 'Países Atendidos', value: 12, suffix: '' },
+  ];
 
-  // Animações quando elementos entram em view
-  useEffect(() => {
-    if (featuresInView) {
-      controls.start('visible');
-    }
-  }, [controls, featuresInView]);
+  const team = [
+    { name: 'Ana Silva', role: 'CEO & Founder', image: 'https://picsum.photos/seed/ana/200/200' },
+    { name: 'Bruno Costa', role: 'CTO', image: 'https://picsum.photos/seed/bruno/200/200' },
+    { name: 'Carla Dias', role: 'Head of AI', image: 'https://picsum.photos/seed/carla/200/200' },
+    { name: 'David Santos', role: 'COO', image: 'https://picsum.photos/seed/david/200/200' },
+  ];
 
-  const goContact = () => {
-    toast.success('Redirecionando para contato...');
-    setTimeout(() => {
-      window.location.href = '/contato';
-    }, 1500);
-  };
-
-  const handleLearn = () => {
-    setHeroExited(true);
-    setTimeout(() => {
-      aboutRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 500);
-  };
-
-  const handleScrollToContato = () => {
-    contatoRef.current?.scrollIntoView({ behavior: 'smooth' });
-    setMenuOpen(false);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setFormStatus('loading');
-    
-    // Simulação de envio com toast notifications
-    toast.loading('Enviando mensagem...', { id: 'contact' });
-    
-    setTimeout(() => {
-      setFormStatus('success');
-      toast.success('Mensagem enviada com sucesso!', { id: 'contact' });
-      setTimeout(() => {
-        setFormStatus('idle');
-        e.target.reset();
-      }, 3000);
-    }, 1500);
-  };
-
-  // Scroll spy
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['home', 'sobre', 'contato'];
-      const scrollPosition = window.scrollY + 100;
-
-      sections.forEach(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-          }
-        }
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const values = [
+    { title: 'Inovação Constante', desc: 'Buscamos sempre a fronteira da tecnologia em IA.', icon: Lightbulb },
+    { title: 'Foco no Cliente', desc: 'O sucesso da sua logística é o nosso norte.', icon: Target },
+    { title: 'Sustentabilidade', desc: 'Reduzimos emissões através da eficiência.', icon: Globe },
+    { title: 'Transparência', desc: 'Processos claros e dados protegidos.', icon: Users },
+  ];
 
   return (
-    <div className="empresa">
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          success: {
-            duration: 3000,
-            icon: '✅',
-          },
-        }}
-      />
-
-     
-
-      {/* Hero Section com Animações Avançadas */}
-      <section id="home" className={`hero ${heroExited ? 'exited' : ''}`}>
-        <div className="hero-content">
-          <motion.div 
-            className="hero-text"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <motion.span 
-              className="badge"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              Logística 4.0
-            </motion.span>
-            
-            <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              Transformamos logística em 
-              <motion.span 
-                className="highlight"
-                animate={{ 
-                  scale: [1, 1.02, 1],
-                  transition: { duration: 2, repeat: Infinity }
-                }}
+    <div className="empresa-root">
+      
+      {/* Hero Section */}
+      <section className="hero">
+        <div className="container">
+          <div className="hero-layout">
+            <div className="hero-left">
+              <motion.h1 
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="hero-title"
               >
-                {' '}vantagem competitiva
-              </motion.span>
-            </motion.h1>
-            
-            <motion.p 
-              className="lead"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              Roteirização inteligente com IA, monitoramento em tempo real 
-              e decisões baseadas em dados — tudo em um só aplicativo.
-            </motion.p>
-
-            {/* Stats com CountUp */}
-            <motion.div 
-              className="hero-stats"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 }}
-            >
-              {[
-                { value: 40, label: 'Eficiência operacional', suffix: '%' },
-                { value: 25, label: 'Custos logísticos', suffix: '%', prefix: '-' },
-                { value: 99.9, label: 'Uptime garantido', suffix: '%' }
-              ].map((stat, index) => (
-                <motion.div 
-                  className="stat"
-                  key={index}
-                  whileHover={{ scale: 1.1, y: -5 }}
-                >
-                  <CountUp
-                    end={stat.value}
-                    duration={2.5}
-                    suffix={stat.suffix}
-                    prefix={stat.prefix || ''}
-                    enableScrollSpy
-                    scrollSpyDelay={200}
-                  />
-                  <span>{stat.label}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            <motion.div 
-              className="hero-actions"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.2 }}
-            >
-              <motion.button 
-                className="btn-primary"
-                onClick={goContact}
-                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(22, 163, 74, 0.3)' }}
-                whileTap={{ scale: 0.95 }}
+                Transformando a logística global com <span className="highlight">Inteligência Artificial</span>
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="hero-subtitle"
               >
-                Falar com especialista
-                <FiArrowRight />
-              </motion.button>
-              <motion.button 
-                className="btn-secondary"
-                onClick={handleLearn}
-                whileHover={{ scale: 1.05, borderColor: '#16a34a' }}
-                whileTap={{ scale: 0.95 }}
+                Nascemos com a missão de tornar o transporte de cargas mais eficiente, sustentável e inteligente através de algoritmos avançados e dados em tempo real.
+              </motion.p>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="cta-buttons"
               >
-                Como funciona
-              </motion.button>
-            </motion.div>
-
-            {/* Features com React Anime */}
-            <Anime
-              easing="easeOutElastic"
-              loop={false}
-              delay={(el, index) => index * 200}
-              translateY={[20, 0]}
-              opacity={[0, 1]}
-            >
-              <ul className="features">
-                <li>
-                  <FiCheck /> Roteirização dinâmica
-                </li>
-                <li>
-                  <FiCheck /> Monitoramento em tempo real
-                </li>
-                <li>
-                  <FiCheck /> Integração TMS/ERP
-                </li>
-              </ul>
-            </Anime>
-          </motion.div>
-
-          {/* Hero Media com Animações */}
-          <motion.div 
-            className="hero-media"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
-            <motion.div 
-              className="phone-frame"
-              animate={{ 
-                y: [0, -10, 0],
-                transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-              }}
-            >
-              <div className="phone-screen">
-                <img src={phoneImg} alt="Prévia do app - logística" loading="lazy" />
+                <button className="btn-outline">Trabalhe Conosco</button>
+              </motion.div>
+            </div>
+            <div className="hero-right">
+              <div className="hero-animation">
+                <div className="hero-decor"></div>
+                <Lottie animationData={animationData} className="animation-player" />
               </div>
-              <div className="phone-notch"></div>
-            </motion.div>
-            
-            <motion.div 
-              className="floating-card card-1"
-              animate={{ 
-                x: [0, 20, 0],
-                y: [0, -10, 0],
-                transition: { duration: 5, repeat: Infinity }
-              }}
-            >
-              <span>📦 Economia de 25%</span>
-            </motion.div>
-            <motion.div 
-              className="floating-card card-2"
-              animate={{ 
-                x: [0, -20, 0],
-                y: [0, 10, 0],
-                transition: { duration: 6, repeat: Infinity, delay: 1 }
-              }}
-            >
-              <span>📍 Rotas otimizadas</span>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
+        </div>
+        {/* Decorative elements */}
+        <div className="hero-gradient" />
+      </section>
+
+      {/* stats section removed */}
+
+      {/* About Section */}
+      <section className="about-section">
+        <div className="container about-layout">
+          <div className="about-left">
+            <div className="about-logo">
+              <img src={logoBanner} alt="Transita.AI Logo" />
+            </div>
+          </div>
+
+          <div className="about-right">
+            <p className="about-text">Desde 2018, a Transita.AI vem revolucionando o setor logístico brasileiro através da tecnologia de ponta. Nossa missão é simplificar a complexidade das operações logísticas, proporcionando eficiência, redução de custos e sustentabilidade para empresas de todos os portes.</p>
+
+            <div className="about-values">
+              <div className="value-item">
+                <h3>Inovação Constante</h3>
+                <p>Buscamos constantemente novas tecnologias e soluções criativas para superar expectativas.</p>
+              </div>
+
+              <div className="value-item">
+                <h3>Parceria Estratégica</h3>
+                <p>Trabalhamos lado a lado com nossos clientes, construindo relações de longo prazo.</p>
+              </div>
+
+              <div className="value-item">
+                <h3>Confiança Total</h3>
+                <p>Segurança, transparência e confiabilidade são a base de todas as nossas relações.</p>
+              </div>
+
+              <div className="value-item">
+                <h3>Sustentabilidade</h3>
+                <p>Compromisso com operações eco-friendly e responsabilidade ambiental em todas as ações.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <main className="main">
-        {/* Features Section com Grid Animado */}
-        <section ref={featuresRefInView} className="section features-section">
-          <div className="container">
-            <motion.div 
-              className="section-header"
-              initial={{ opacity: 0, y: 20 }}
-              animate={featuresInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="section-tag">Funcionalidades</span>
-              <h2>Tudo que você precisa em um só lugar</h2>
-            </motion.div>
-
-            <motion.div 
-              className="features-grid"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.2 }
-                }
-              }}
-              initial="hidden"
-              animate={controls}
-            >
-              {FEATURES.map((feature, index) => (
-                <motion.div 
-                  className="feature-card"
-                  key={index}
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0 }
-                  }}
-                  whileHover={{ 
-                    y: -10,
-                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-                  }}
-                >
-                  <motion.div 
-                    className="feature-icon"
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    {feature.icon}
-                  </motion.div>
-                  <h3>{feature.title}</h3>
-                  <p>{feature.description}</p>
-                  <div className="feature-stats">{feature.stats}</div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Sobre Section com Lottie Animation */}
-        <section ref={aboutRef} id="sobre" className="section about">
-          <div className="container">
-            <div className="about-wrapper">
-              <motion.div 
-                className="about-content"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                <span className="section-tag">Sobre nós</span>
-                <h2>Tecnologia que move o Brasil</h2>
-                <p className="section-description">
-                  Somos uma plataforma focada em otimizar operações logísticas usando 
-                  modelos preditivos, telemetria avançada e integração com sistemas legados.
-                </p>
-
-                <div className="about-stats">
-                  <div className="stat-item">
-                    <CountUp end={500} suffix="+" enableScrollSpy />
-                    <span>Clientes ativos</span>
-                  </div>
-                  <div className="stat-item">
-                    <CountUp end={1000000} suffix="+" enableScrollSpy />
-                    <span>Entregas otimizadas</span>
-                  </div>
-                  <div className="stat-item">
-                    <CountUp end={24} suffix="/7" enableScrollSpy />
-                    <span>Suporte disponível</span>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                className="about-animation"
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                <Lottie 
-                  animationData={animationData} 
-                  loop={true}
-                  style={{ width: '100%', height: '400px' }}
-                />
-              </motion.div>
-            </div>
-
-            <motion.div 
-              className="about-cards"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.3 }
-                }
-              }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-            >
-              {[
-                { icon: <FiTrendingUp />, title: 'Missão', text: 'Democratizar o acesso à tecnologia de ponta no setor logístico brasileiro.' },
-                { icon: <BsGraphUp />, title: 'Visão', text: 'Ser referência em inteligência logística na América Latina até 2026.' },
-                { icon: <FaShieldAlt />, title: 'Valores', text: 'Inovação, sustentabilidade e parcerias de longo prazo.' }
-              ].map((item, index) => (
-                <motion.div 
-                  className="card"
-                  key={index}
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0 }
-                  }}
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="card-icon">{item.icon}</div>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Investidores Section */}
-        <section className="section investors">
-          <div className="container">
-            <motion.div 
-              className="section-header"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="section-tag">Quem confia</span>
-              <h2>Nossos investidores</h2>
-            </motion.div>
-
-            <div className="investors-grid">
-              {INVESTORS.map((investor, index) => (
-                <motion.div 
-                  className="investor-card"
-                  key={investor.name}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
-                  }}
-                >
-                  <motion.div 
-                    className="investor-logo"
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    {investor.icon}
-                  </motion.div>
-                  <div className="investor-info">
-                    <strong>{investor.name}</strong>
-                    <span>{investor.type}</span>
-                    <span className="investor-amount">{investor.amount}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Team Section */}
-        <section className="section team">
-          <div className="container">
-            <motion.div 
-              className="section-header"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="section-tag">Time</span>
-              <h2>Quem está construindo o futuro</h2>
-            </motion.div>
-
-            <div className="team-grid">
-              {TEAM.map((member, index) => (
-                <motion.div 
-                  className="team-card"
-                  key={member.name}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  whileHover={{ 
-                    y: -10,
-                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
-                  }}
-                >
-                  <motion.div 
-                    className="member-avatar"
-                    style={{ backgroundColor: member.color }}
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                  >
-                    {member.icon}
-                  </motion.div>
-                  <div className="member-info">
-                    <h3>{member.name}</h3>
-                    <span className="member-role">{member.role}</span>
-                    <p className="member-bio">{member.bio}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Testimonials Section */}
-        <section className="section testimonials">
-          <div className="container">
-            <motion.div 
-              className="section-header"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="section-tag">Depoimentos</span>
-              <h2>O que nossos clientes dizem</h2>
-            </motion.div>
-
-            <div className="testimonials-grid">
-              {TESTIMONIALS.map((testimonial, index) => (
-                <motion.div 
-                  className="testimonial-card"
-                  key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.3 }}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="testimonial-rating">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <span key={i}>⭐</span>
-                    ))}
-                  </div>
-                  <p className="testimonial-content">"{testimonial.content}"</p>
-                  <div className="testimonial-author">
-                    <strong>{testimonial.name}</strong>
-                    <span>{testimonial.role}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Offices Section */}
-        <section className="section offices">
-          <div className="container">
-            <motion.div 
-              className="section-header"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="section-tag">Presença</span>
-              <h2>Onde estamos</h2>
-            </motion.div>
-
-            <div className="offices-grid">
-              {OFFICES.map((office, index) => (
-                <motion.div 
-                  className="office-card"
-                  key={office.city}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  whileHover={{ 
-                    y: -5,
-                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
-                  }}
-                >
-                  <motion.div 
-                    className="office-pin"
-                    animate={{ 
-                      y: [0, -5, 0],
-                      transition: { duration: 2, repeat: Infinity }
-                    }}
-                  >
-                    {office.icon}
-                  </motion.div>
-                  <div className="office-info">
-                    <h3>{office.city}</h3>
-                    <p>{office.address}</p>
-                    <span className="office-region">{office.region}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Contato Section */}
-        <section ref={contatoRef} id="contato" className="section contact">
-          <div className="container">
-            <motion.div 
-              className="contact-wrapper"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="contact-info">
-                <span className="section-tag">Contato</span>
-                <h2>Vamos transformar sua logística?</h2>
-                <p className="contact-description">
-                  Preencha o formulário e nossa equipe entrará em contato 
-                  em até 24 horas para uma consultoria gratuita.
-                </p>
-                
-                <motion.div 
-                  className="contact-details"
-                  variants={{
-                    hidden: { opacity: 0 },
-                    visible: {
-                      opacity: 1,
-                      transition: { staggerChildren: 0.2 }
-                    }
-                  }}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  {[
-                    { icon: <FiPhone />, title: 'Telefone', text: '(11) 99999-9999' },
-                    { icon: <FiMail />, title: 'Email', text: 'contato@transita.ia' },
-                    { icon: <FiClockIcon />, title: 'Horário', text: 'Segunda à Sexta, 9h às 18h' }
-                  ].map((detail, index) => (
-                    <motion.div 
-                      className="detail"
-                      key={index}
-                      variants={{
-                        hidden: { opacity: 0, x: -20 },
-                        visible: { opacity: 1, x: 0 }
-                      }}
-                      whileHover={{ x: 10 }}
-                    >
-                      <span className="detail-icon">{detail.icon}</span>
-                      <div>
-                        <strong>{detail.title}</strong>
-                        <p>{detail.text}</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-
-                <motion.button 
-                  className="btn-whatsapp"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => window.open('https://wa.me/5511999999999', '_blank')}
-                >
-                  <FaWhatsapp /> Falar no WhatsApp
-                </motion.button>
+          {/* Features Section */}
+          <section className="features-section">
+            <div className="container">
+              <div className="features-header">
+                <h2 className="features-title">Funcionalidades</h2>
+                <p className="features-subtitle">Tudo que você precisa em um só lugar</p>
               </div>
 
-              <motion.form 
-                className="contact-form" 
-                onSubmit={handleSubmit}
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-              >
-                <Anime
-                  easing="easeOutQuad"
-                  delay={(el, index) => index * 100}
-                  translateY={[20, 0]}
-                  opacity={[0, 1]}
-                >
-                  <div className="form-group">
-                    <input type="text" name="name" placeholder="Nome completo" required />
-                  </div>
-                  <div className="form-group">
-                    <input type="email" name="email" placeholder="Email corporativo" required />
-                  </div>
-                  <div className="form-group">
-                    <input type="tel" name="phone" placeholder="Telefone" required />
-                  </div>
-                  <div className="form-group">
-                    <input type="text" name="company" placeholder="Empresa" required />
-                  </div>
-                  <div className="form-group">
-                    <textarea name="message" rows="4" placeholder="Como podemos ajudar?" required></textarea>
-                  </div>
-                </Anime>
+              <div className="features-grid">
+                <div className="feature-card">
+                  <div className="feature-icon"><Target size={28} /></div>
+                  <h3 className="feature-title">Roteirização Dinâmica</h3>
+                  <p className="feature-desc">Otimização em tempo real considerando trânsito, entregas e restrições</p>
+                  <div className="feature-metric">+40% eficiência</div>
+                </div>
 
-                <motion.button 
-                  type="submit" 
-                  className="btn-submit"
-                  disabled={formStatus === 'loading'}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {formStatus === 'loading' ? (
-                    <motion.div 
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    >
-                      ⏳
-                    </motion.div>
-                  ) : formStatus === 'success' ? 'Enviado! ✓' : 'Solicitar contato'}
-                </motion.button>
+                <div className="feature-card">
+                  <div className="feature-icon"><TrendingUp size={28} /></div>
+                  <h3 className="feature-title">Monitoramento em Tempo Real</h3>
+                  <p className="feature-desc">Acompanhe sua frota com atualizações a cada 5 segundos</p>
+                  <div className="feature-metric">99.9% uptime</div>
+                </div>
 
-                <AnimatePresence>
-                  {formStatus === 'success' && (
-                    <motion.p 
-                      className="form-success"
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                    >
-                      Recebemos sua mensagem! Em breve entraremos em contato.
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-              </motion.form>
-            </motion.div>
+                <div className="feature-card">
+                  <div className="feature-icon"><Lightbulb size={28} /></div>
+                  <h3 className="feature-title">Análise Preditiva</h3>
+                  <p className="feature-desc">Preveja demandas e evite gargalos com machine learning</p>
+                  <div className="feature-metric">95% precisão</div>
+                </div>
+
+                <div className="feature-card">
+                  <div className="feature-icon"><Award size={28} /></div>
+                  <h3 className="feature-title">Segurança Avançada</h3>
+                  <p className="feature-desc">Criptografia de ponta a ponta e conformidade com LGPD</p>
+                  <div className="feature-metric">ISO 27001.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+      {/* Mission & Values */}
+      <section className="values-section">
+        <div className="container">
+          <div className="values-header">
+            <h2 className="values-title">Nossos Valores</h2>
+            <p className="values-subtitle">O que nos guia todos os dias na construção do futuro da logística.</p>
           </div>
-        </section>
-      </main>
+          <div className="values-grid">
+            {values.map((value, i) => (
+              <motion.div key={i} whileHover={{ y: -10 }} className="value-card">
+                <div className="value-icon"><value.icon size={24} /></div>
+                <h3 className="value-title">{value.title}</h3>
+                <p className="value-desc">{value.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="team-section">
+        <div className="container">
+          <div className="team-header">
+            <div className="team-intro">
+              <h2 className="team-title">Mentes brilhantes por trás da tecnologia</h2>
+              <p className="team-subtitle">Um time multidisciplinar de especialistas em IA, logística e engenharia de software.</p>
+            </div>
+            <button className="btn-outline">Ver Time Completo</button>
+          </div>
+          <div className="team-grid">
+            {team.map((member, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="team-member">
+                <div className="member-photo">
+                  <img src={member.image} alt={member.name} className="member-img" referrerPolicy="no-referrer" />
+                  <div className="member-over">
+                    <button className="icon-btn"><Linkedin size={18} /></button>
+                    <button className="icon-btn"><Twitter size={18} /></button>
+                  </div>
+                </div>
+                <h3 className="member-name">{member.name}</h3>
+                <p className="member-role">{member.role}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="contact-section">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">FALE CONOSCO</h2>
+            <h3 className="section-subtitle">Estamos Prontos para Ajudar</h3>
+            <p className="section-description">Converse com nossos especialistas e transforme sua operação logística hoje mesmo.</p>
+          </div>
+
+          <div className="contact-content">
+            {/* Contact Form */}
+            <div className="contact-form-container">
+              <div className="form-header">
+                <h3>Envie uma Mensagem</h3>
+                <p>Preencha o formulário abaixo e nossa equipe entrará em contato em até 2 horas úteis.</p>
+              </div>
+
+              <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="name">Nome Completo *</label>
+                    <input
+                      type="text"
+                      id="name"
+                      placeholder="Digite seu nome completo"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="email">Email *</label>
+                    <input
+                      type="email"
+                      id="email"
+                      placeholder="seu@email.com"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="company">Empresa</label>
+                    <input
+                      type="text"
+                      id="company"
+                      placeholder="Nome da sua empresa"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="phone">Telefone *</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      placeholder="(11) 99999-9999"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="subject">Assunto *</label>
+                  <select id="subject" required>
+                    <option value="">Selecione o assunto</option>
+                    <option value="orcamento">Orçamento</option>
+                    <option value="suporte">Suporte Técnico</option>
+                    <option value="demonstracao">Demonstração</option>
+                    <option value="parceria">Parceria</option>
+                    <option value="outros">Outros</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="message">Mensagem *</label>
+                  <textarea
+                    id="message"
+                    placeholder="Descreva sua dúvida, problema ou solicitação..."
+                    rows="5"
+                    required
+                  ></textarea>
+                </div>
+
+                <div className="form-footer">
+                  <p className="privacy-notice">
+                    Seus dados estão seguros conosco. Não compartilhamos informações com terceiros.
+                  </p>
+                  <button type="submit" className="btn-primary transita-btn-xl">
+                    <span>Enviar Mensagem</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {/* Contact Info */}
+            <div className="contact-info">
+              <div className="contact-units">
+                <h3>Nossas Unidades</h3>
+
+                <div className="unit-card">
+                  <div className="unit-header">
+                    <div className="unit-badge">HQ</div>
+                    <h4>São Paulo - Matriz</h4>
+                  </div>
+                  <div className="unit-address">
+                    <MapPin size={18} />
+                    <span>Av. Paulista, 1000 - 10º andar<br />Bela Vista, São Paulo - SP</span>
+                  </div>
+                  <div className="unit-contact">
+                    <div className="contact-item">
+                      <Phone size={16} />
+                      <span>(11) 3333-4444</span>
+                    </div>
+                    <div className="contact-item">
+                      <Mail size={16} />
+                      <span>sp@transita.ai</span>
+                    </div>
+                    <div className="contact-item">
+                      <span>Seg-Sex: 8h às 18h</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="unit-card">
+                  <div className="unit-header">
+                    <div className="unit-badge">FILIAL</div>
+                    <h4>Goiás - Anápolis</h4>
+                  </div>
+                  <div className="unit-address">
+                    <MapPin size={18} />
+                    <span>Av. Brasil, 500 - Centro<br />Anápolis, Goiás - GO</span>
+                  </div>
+                  <div className="unit-contact">
+                    <div className="contact-item">
+                      <Phone size={16} />
+                      <span>(62) 2222-3333</span>
+                    </div>
+                    <div className="contact-item">
+                      <Mail size={16} />
+                      <span>go@transita.ai</span>
+                    </div>
+                    <div className="contact-item">
+                      <span>Seg-Sex: 8h às 18h</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
     </div>
   );
 };

@@ -1,0 +1,73 @@
+/* Estilos escopados para Overview.jsx
+   Todos os seletores começam com .overview-root para evitar conflitos globais */
+
+.overview-root { padding: var(--space-lg); color: var(--text); }
+
+/* Header */
+.overview-root > .flex { align-items: center; }
+.overview-root h1 { color: #0f172a; margin: 0 0 6px 0; font-size: 1.6rem; line-height: 1.1; }
+.overview-root p { margin: 0; color: #6b7280; }
+
+/* Actions */
+.overview-root .flex > button { border: none; cursor: pointer; }
+.overview-root .flex > button[aria-pressed="true"],
+.overview-root .flex > button.active { box-shadow: 0 6px 18px rgba(2,6,23,0.06); }
+
+/* Filters panel (scoped) */
+.overview-root .overflow-hidden > div {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(15,23,42,0.06);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.04);
+}
+.overview-root label { display:block; font-size: 11px; color: #6b7280; font-weight:700; margin-bottom:6px; }
+.overview-root select { width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(15,23,42,0.04); background:#f8fafc; }
+
+/* Stats cards (white) */
+.overview-root .grid > .bg-white {
+  background: #fff;
+  border-radius: 18px;
+  padding: 24px;
+  border: 1px solid rgba(15,23,42,0.06);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.04);
+}
+.overview-root .grid > .bg-white p { color: #374151; }
+.overview-root .grid > .bg-white .w-12 { display:flex; align-items:center; justify-content:center; border-radius:12px; color: #fff; }
+
+/* Dark stat tiles (dashboardStats) */
+.overview-root .grid > .bg-slate-900 {
+  background: linear-gradient(180deg,#07122b,#06101e);
+  border-radius: 18px;
+  padding: 20px;
+  color: #e6eef8;
+  box-shadow: 0 12px 34px rgba(2,6,23,0.5);
+}
+
+/* Charts containers */
+.overview-root .lg\:col-span-2 { border-radius: 24px; overflow: hidden; }
+.overview-root .h-\[300px\], .overview-root .h-\[250px\] { min-height: 250px; }
+
+/* Pie legend and list */
+.overview-root .absolute.inset-0 { pointer-events: none; }
+.overview-root .mt-6 .flex { display:flex; gap:12px; align-items:center; }
+
+/* Recent activity and alerts */
+.overview-root .space-y-6 > div { padding: 0; }
+.overview-root .p-4.rounded-2xl { border-radius: 16px; }
+
+/* Buttons in this page (scoped) */
+.overview-root .bg-primary-600 { background: linear-gradient(90deg,var(--primary),var(--primary-600)); color: #fff; }
+.overview-root .bg-white { background: #fff; }
+.overview-root .bg-slate-50 { background: #f8fafc; }
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .overview-root { padding: var(--space-md); }
+  .overview-root .grid { gap: 16px; }
+}
+
+/* Ensure high specificity for interactive elements to avoid global overrides */
+.overview-root button, .overview-root select { font-family: var(--font-sans); }
+
+/* End of Overview.css */

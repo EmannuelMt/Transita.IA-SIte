@@ -175,12 +175,8 @@ const Footer = () => {
     { name: "SOC 2", desc: "Auditoria completa", icon: FiAward }
   ];
 
-  const downloadLinks = [
-    { name: "Whitepaper AI", href: "/whitepaper", icon: FiDownload, size: "2.4 MB" },
-    { name: "Case Santander", href: "/case-santander", icon: FiFileText, badge: "NEW" },
-    { name: "App iOS", href: "/app-ios", icon: FiSmartphone },
-    { name: "App Android", href: "/app-android", icon: FiSmartphone }
-  ];
+  // Downloads removed per request
+  const downloadLinks = [];
 
   // Componentes
   const ContactItem = memo(({ contact, index }) => (
@@ -290,15 +286,17 @@ const Footer = () => {
                   resultados mensuráveis.
                 </p>
 
-                {/* Download Links */}
-                <div className="footer-downloads">
-                  <h4 className="footer-downloads-title">Recursos para download</h4>
-                  <div className="footer-downloads-grid">
-                    {downloadLinks.map((link, index) => (
-                      <DownloadLink key={link.name} link={link} index={index} />
-                    ))}
+                {/* Download Links (hidden — list removed) */}
+                {downloadLinks.length > 0 && (
+                  <div className="footer-downloads">
+                    <h4 className="footer-downloads-title">Recursos para download</h4>
+                    <div className="footer-downloads-grid">
+                      {downloadLinks.map((link, index) => (
+                        <DownloadLink key={link.name} link={link} index={index} />
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Contact Section */}

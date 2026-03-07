@@ -1,474 +1,241 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import { 
-  FiUser, FiTruck, FiClock, FiStar, FiMap, FiAlertCircle, 
-  FiCheckCircle, FiCalendar, FiSmartphone, FiNavigation,
-  FiZap, FiAward, FiFileText, FiLifeBuoy, FiRadio,
-  FiActivity, FiTrendingUp, FiShield, FiSettings,
-  FiLogOut, FiBell, FiEye, FiEyeOff, FiPlay, FiPause
-} from 'react-icons/fi';
-import './EmployeeProfile.css';
+  Truck, 
+  Clock, 
+  MapPin, 
+  Star, 
+  TrendingUp, 
+  Shield, 
+  Calendar, 
+  Navigation,
+  CheckCircle2,
+  AlertCircle,
+  Play,
+  Square
+} from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const EmployeeProfile = () => {
-  const [isOnline, setIsOnline] = useState(false);
-  const [shiftStarted, setShiftStarted] = useState(false);
+  const [isShiftActive, setIsShiftActive] = useState(false);
   const [shiftTime, setShiftTime] = useState(0);
-  const [showMetrics, setShowMetrics] = useState(true);
 
-  const employee = {
-    name: 'Carlos Eduardo Oliveira',
-    id: 'TR-99283',
-    role: 'Motorista de Frota Pesada',
-    rating: 4.9,
-    trips: 1240,
-    hoursThisMonth: 168,
-    efficiencyScore: 94,
-    safetyScore: 98,
-    punctualityScore: 87,
-    status: isOnline ? 'Em Rota' : 'Indisponível',
-    statusColor: isOnline ? 'status-online' : 'status-offline',
-    avatar: 'https://i.pravatar.cc/150?u=carlos',
-    department: 'Transporte Logístico',
-    hireDate: '15/03/2021',
-    license: 'D | E',
-    currentVehicle: 'Scania R500 - TRC-8A34',
-    phone: '(11) 98765-4321',
-    email: 'carlos.oliveira@transita.ia'
-  };
-
-  const recentTrips = [
-    { 
-      id: '1', 
-      origin: 'São Paulo, SP', 
-      destination: 'Curitiba, PR', 
-      date: 'Hoje', 
-      time: '08:45 - 16:30',
-      status: 'Concluído', 
-      statusColor: 'trip-status-completed',
-      vehicle: 'Scania R500',
-      distance: '408 km',
-      estimatedTime: '7h 45m'
-    },
-    { 
-      id: '2', 
-      origin: 'Campinas, SP', 
-      destination: 'Santos, SP', 
-      date: 'Ontem', 
-      time: '09:15 - 15:20',
-      status: 'Concluído', 
-      statusColor: 'trip-status-completed',
-      vehicle: 'Volvo FH',
-      distance: '182 km',
-      estimatedTime: '3h 30m'
-    },
-    { 
-      id: '3', 
-      origin: 'São Paulo, SP', 
-      destination: 'Belo Horizonte, MG', 
-      date: '12 Out', 
-      time: '07:30 - 17:45',
-      status: 'Concluído', 
-      statusColor: 'trip-status-completed',
-      vehicle: 'Scania R500',
-      distance: '586 km',
-      estimatedTime: '9h 15m'
-    },
-  ];
-
-  const metrics = [
-    { label: 'Eficiência de Rota', value: employee.efficiencyScore, color: 'metric-green', icon: FiTrendingUp },
-    { label: 'Segurança', value: employee.safetyScore, color: 'metric-blue', icon: FiShield },
-    { label: 'Pontualidade', value: employee.punctualityScore, color: 'metric-orange', icon: FiClock },
-    { label: 'Economia de Combustível', value: 91, color: 'metric-purple', icon: FiZap },
-  ];
-
-  const quickActions = [
-    { icon: FiFileText, label: 'Meus Documentos', color: 'action-blue', description: 'CNH, documentos do veículo' },
-    { icon: FiCalendar, label: 'Escala de Turnos', color: 'action-purple', description: 'Próximos turnos e folgas' },
-    { icon: FiLifeBuoy, label: 'Suporte Técnico', color: 'action-red', description: 'Ajuda e suporte 24h' },
-    { icon: FiSmartphone, label: 'Configurar Dispositivo', color: 'action-gray', description: 'App e dispositivos' },
-    { icon: FiBell, label: 'Notificações', color: 'action-yellow', description: 'Alertas e comunicações' },
-    { icon: FiSettings, label: 'Configurações', color: 'action-green', description: 'Preferências pessoais' },
-  ];
-
-  const achievements = [
-    { id: 1, name: 'Motorista Ouro', color: 'achievement-gold', icon: '🥇', progress: 100 },
-    { id: 2, name: '100k Km Seguros', color: 'achievement-silver', icon: '🛡️', progress: 100 },
-    { id: 3, name: 'Eficiência 5 Estrelas', color: 'achievement-bronze', icon: '⭐', progress: 94 },
-    { id: 4, name: 'Piloto da Economia', color: 'achievement-blue', icon: '⛽', progress: 85 },
-  ];
-
-  const handleStartShift = () => {
-    setIsOnline(true);
-    setShiftStarted(true);
-    // Iniciar contador de tempo
-    const interval = setInterval(() => {
-      setShiftTime(prev => prev + 1);
-    }, 1000);
+  useEffect(() => {
+    let interval;
+    if (isShiftActive) {
+      interval = setInterval(() => {
+        setShiftTime(prev => prev + 1);
+      }, 1000);
+    }
     return () => clearInterval(interval);
-  };
-
-  const handleEndShift = () => {
-    setIsOnline(false);
-    setShiftStarted(false);
-    setShiftTime(0);
-  };
+  }, [isShiftActive]);
 
   const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
+  const handleToggleShift = () => {
+    if (!isShiftActive) {
+      setIsShiftActive(true);
+      toast.success('Turno iniciado!');
+    } else {
+      setIsShiftActive(false);
+      toast.success(`Turno finalizado! Duração: ${formatTime(shiftTime)}`);
+      setShiftTime(0);
+    }
+  };
+
+  const stats = [
+    { label: 'Eficiência', value: '94%', icon: TrendingUp, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { label: 'Segurança', value: '98/100', icon: Shield, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: 'Pontualidade', value: '99%', icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
+    { label: 'Avaliação', value: '4.9', icon: Star, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+  ];
+
+  const recentTrips = [
+    { id: 'T-1024', from: 'CD São Paulo', to: 'Campinas, SP', date: 'Hoje, 08:30', status: 'Concluído', distance: '98km' },
+    { id: 'T-1023', from: 'CD São Paulo', to: 'Santos, SP', date: 'Ontem, 14:20', status: 'Concluído', distance: '72km' },
+    { id: 'T-1022', from: 'CD São Paulo', to: 'Guarulhos, SP', date: 'Ontem, 09:15', status: 'Concluído', distance: '25km' },
+  ];
+
   return (
-    <div className="employee-profile-page">
-      <div className="employee-profile-container">
+    <div className="pt-24 pb-12 min-h-screen bg-slate-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header do Perfil */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="employee-profile-header"
-        >
-          <div className="profile-header-overlay"></div>
-          
-          <div className="profile-header-content">
-            <div className="profile-avatar-section">
-              <div className="employee-avatar-container">
-                <img 
-                  src={employee.avatar} 
-                  alt={employee.name} 
-                  className="employee-avatar"
-                />
-                <div className={`employee-status-indicator ${employee.statusColor}`}>
-                  <div className="status-pulse"></div>
-                </div>
-              </div>
-              
-              <div className="employee-basic-info">
-                <h1 className="employee-name">{employee.name}</h1>
-                <div className="employee-meta">
-                  <span className="employee-id">ID: {employee.id}</span>
-                  <span className="employee-role">
-                    <FiTruck className="role-icon" /> {employee.role}
-                  </span>
-                </div>
-                
-                <div className="employee-rating">
-                  <div className="rating-stars">
-                    {[...Array(5)].map((_, i) => (
-                      <FiStar 
-                        key={i} 
-                        className={`star-icon ${i < Math.floor(employee.rating) ? 'star-filled' : ''}`}
-                      />
-                    ))}
-                  </div>
-                  <span className="rating-value">{employee.rating}</span>
-                  <span className="rating-trips">({employee.trips} viagens)</span>
-                </div>
+        {/* Header / Profile Info */}
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 mb-8">
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="relative">
+              <img 
+                src="https://picsum.photos/seed/driver/200/200" 
+                alt="Driver" 
+                className="w-32 h-32 rounded-3xl object-cover shadow-lg"
+                referrerPolicy="no-referrer"
+              />
+              <div className={`absolute -bottom-2 -right-2 w-8 h-8 rounded-full border-4 border-white flex items-center justify-center ${isShiftActive ? 'bg-emerald-500' : 'bg-slate-300'}`}>
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
               </div>
             </div>
             
-            <div className="profile-actions">
-              <div className="shift-controls">
-                <div className="shift-timer">
-                  <FiClock className="timer-icon" />
-                  <span className="timer-value">
-                    {shiftStarted ? formatTime(shiftTime) : '00:00:00'}
-                  </span>
-                </div>
-                
-                {shiftStarted ? (
-                  <button 
-                    onClick={handleEndShift}
-                    className="shift-button shift-button-end"
-                  >
-                    <FiPause className="shift-icon" />
-                    Finalizar Turno
-                  </button>
-                ) : (
-                  <button 
-                    onClick={handleStartShift}
-                    className="shift-button shift-button-start"
-                  >
-                    <FiPlay className="shift-icon" />
-                    Iniciar Turno
-                  </button>
-                )}
+            <div className="flex-grow text-center md:text-left">
+              <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-2">
+                <h1 className="text-3xl font-bold text-slate-900">Ricardo Oliveira</h1>
+                <span className="inline-flex items-center px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-full uppercase tracking-wider">Motorista Senior</span>
               </div>
-              
-              <div className="secondary-actions">
-                <button className="secondary-action-button">
-                  <FiAlertCircle className="action-icon" />
-                  Relatar Ocorrência
-                </button>
-                <button className="secondary-action-button">
-                  <FiLogOut className="action-icon" />
-                  Sair
-                </button>
+              <p className="text-slate-500 flex items-center justify-center md:justify-start gap-2 mb-4">
+                <Truck size={16} />
+                Placa: ABC-1234 • Scania R450
+              </p>
+              <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                <div className="flex items-center gap-1 text-sm font-medium text-slate-600">
+                  <MapPin size={16} className="text-red-500" />
+                  Base: São Paulo, SP
+                </div>
+                <div className="flex items-center gap-1 text-sm font-medium text-slate-600">
+                  <Calendar size={16} className="text-indigo-500" />
+                  Desde: Jan 2022
+                </div>
               </div>
             </div>
-          </div>
-        </motion.div>
 
-        {/* Conteúdo Principal */}
-        <div className="employee-profile-grid">
+            <div className="flex flex-col items-center gap-3 p-6 bg-slate-50 rounded-3xl border border-slate-100 min-w-[200px]">
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Tempo de Turno</p>
+              <p className="text-3xl font-mono font-bold text-slate-900">{formatTime(shiftTime)}</p>
+              <button 
+                onClick={handleToggleShift}
+                className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-all ${
+                  isShiftActive 
+                    ? 'bg-red-100 text-red-600 hover:bg-red-200' 
+                    : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200'
+                }`}
+              >
+                {isShiftActive ? <Square size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
+                {isShiftActive ? 'Finalizar Turno' : 'Iniciar Turno'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* Sidebar Esquerda */}
-          <div className="employee-profile-sidebar">
-            {/* Informações de Contato */}
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
-              className="employee-info-card"
-            >
-              <h3 className="info-card-title">
-                <FiUser className="title-icon" />
-                Informações Pessoais
-              </h3>
-              
-              <div className="employee-details">
-                <div className="detail-item">
-                  <span className="detail-label">Departamento</span>
-                  <span className="detail-value">{employee.department}</span>
-                </div>
-                <div className="detail-item">
-                  <span className="detail-label">Data de Admissão</span>
-                  <span className="detail-value">{employee.hireDate}</span>
-                </div>
-                <div className="detail-item">
-                  <span className="detail-label">CNH Categoria</span>
-                  <span className="detail-value detail-license">{employee.license}</span>
-                </div>
-                <div className="detail-item">
-                  <span className="detail-label">Veículo Atual</span>
-                  <span className="detail-value">{employee.currentVehicle}</span>
-                </div>
-                <div className="detail-item">
-                  <span className="detail-label">Telefone</span>
-                  <span className="detail-value">{employee.phone}</span>
-                </div>
-                <div className="detail-item">
-                  <span className="detail-label">Email</span>
-                  <span className="detail-value">{employee.email}</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Métricas de Performance */}
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="performance-card"
-            >
-              <div className="performance-header">
-                <FiActivity className="performance-icon" />
-                <h3 className="performance-title">Performance do Mês</h3>
-                <button 
-                  onClick={() => setShowMetrics(!showMetrics)}
-                  className="toggle-metrics-button"
-                >
-                  {showMetrics ? <FiEyeOff /> : <FiEye />}
-                </button>
-              </div>
-              
-              {showMetrics && (
-                <div className="metrics-grid">
-                  {metrics.map((metric, index) => {
-                    const Icon = metric.icon;
-                    return (
-                      <div key={index} className="metric-item">
-                        <div className="metric-header">
-                          <div className={`metric-icon ${metric.color}`}>
-                            <Icon />
-                          </div>
-                          <span className="metric-label">{metric.label}</span>
-                        </div>
-                        <div className="metric-progress">
-                          <div className="progress-bar">
-                            <motion.div 
-                              initial={{ width: 0 }}
-                              animate={{ width: `${metric.value}%` }}
-                              className={`progress-fill ${metric.color}`}
-                            />
-                          </div>
-                          <span className="metric-value">{metric.value}%</span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </motion.div>
-
-            {/* Conquistas */}
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="achievements-card"
-            >
-              <div className="achievements-header">
-                <FiAward className="achievements-icon" />
-                <h3 className="achievements-title">Conquistas</h3>
-              </div>
-              
-              <div className="achievements-list">
-                {achievements.map(achievement => (
-                  <div key={achievement.id} className={`achievement-item ${achievement.color}`}>
-                    <span className="achievement-icon">{achievement.icon}</span>
-                    <div className="achievement-info">
-                      <span className="achievement-name">{achievement.name}</span>
-                      <div className="achievement-progress">
-                        <div className="achievement-progress-bar">
-                          <div 
-                            className="achievement-progress-fill"
-                            style={{ width: `${achievement.progress}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-8">
+            
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {stats.map((stat, i) => (
+                <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                  <div className={`w-10 h-10 ${stat.bg} ${stat.color} rounded-xl flex items-center justify-center mb-4`}>
+                    <stat.icon size={20} />
                   </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Conteúdo Principal */}
-          <div className="employee-profile-content">
-            {/* Histórico de Viagens */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="trips-history-card"
-            >
-              <div className="trips-header">
-                <div className="trips-header-info">
-                  <h3 className="trips-title">
-                    <FiMap className="trips-icon" />
-                    Histórico de Viagens
-                  </h3>
-                  <span className="trips-count">{recentTrips.length} viagens recentes</span>
+                  <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">{stat.label}</p>
                 </div>
-                <button className="view-report-button">
-                  <FiNavigation className="report-icon" />
-                  Ver Relatório Completo
-                </button>
+              ))}
+            </div>
+
+            {/* Recent Trips */}
+            <section className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold text-slate-900">Viagens Recentes</h2>
+                <button className="text-sm font-bold text-indigo-600 hover:underline">Ver todas</button>
               </div>
-              
-              <div className="trips-list">
-                {recentTrips.map(trip => (
-                  <div key={trip.id} className="trip-item">
-                    <div className="trip-route">
-                      <div className="route-origin">
-                        <div className="route-dot route-dot-origin"></div>
-                        <span className="route-city">{trip.origin}</span>
-                      </div>
-                      <div className="route-line">
-                        <div className="route-distance">{trip.distance}</div>
-                        <div className="route-line-inner"></div>
-                      </div>
-                      <div className="route-destination">
-                        <div className="route-dot route-dot-destination"></div>
-                        <span className="route-city">{trip.destination}</span>
-                      </div>
-                    </div>
-                    
-                    <div className="trip-details">
-                      <div className="trip-info">
-                        <div className="trip-vehicle">
-                          <FiTruck className="vehicle-icon" />
-                          {trip.vehicle}
+              <div className="space-y-4">
+                {recentTrips.map((trip) => (
+                  <div key={trip.id} className="group p-4 rounded-2xl border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/30 transition-all">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-100">
+                          <Navigation size={20} className="text-indigo-600" />
                         </div>
-                        <div className="trip-time">{trip.time}</div>
-                        <div className="trip-estimated">{trip.estimatedTime}</div>
+                        <div>
+                          <p className="font-bold text-slate-900">{trip.from} → {trip.to}</p>
+                          <p className="text-xs text-slate-500">{trip.date} • {trip.distance}</p>
+                        </div>
                       </div>
-                      
-                      <div className="trip-meta">
-                        <span className="trip-date">{trip.date}</span>
-                        <span className={`trip-status ${trip.statusColor}`}>
+                      <div className="flex items-center justify-between sm:justify-end gap-4">
+                        <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                          <CheckCircle2 size={12} />
                           {trip.status}
                         </span>
+                        <p className="text-sm font-bold text-slate-900">{trip.id}</p>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-            </motion.div>
-
-            {/* Ações Rápidas */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="quick-actions-card"
-            >
-              <h3 className="actions-title">Ações Rápidas</h3>
-              
-              <div className="actions-grid">
-                {quickActions.map((action, index) => {
-                  const Icon = action.icon;
-                  return (
-                    <button key={index} className={`action-button ${action.color}`}>
-                      <div className="action-icon-wrapper">
-                        <Icon className="action-button-icon" />
-                      </div>
-                      <div className="action-content">
-                        <span className="action-label">{action.label}</span>
-                        <span className="action-description">{action.description}</span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </motion.div>
-
-            {/* Estatísticas Resumo */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="stats-summary-card"
-            >
-              <div className="stats-grid">
-                <div className="stat-summary">
-                  <FiClock className="stat-icon stat-icon-hours" />
-                  <div className="stat-content">
-                    <span className="stat-number">{employee.hoursThisMonth}</span>
-                    <span className="stat-label">Horas Trabalhadas</span>
-                  </div>
-                </div>
-                
-                <div className="stat-summary">
-                  <FiMap className="stat-icon stat-icon-trips" />
-                  <div className="stat-content">
-                    <span className="stat-number">{employee.trips}</span>
-                    <span className="stat-label">Viagens Totais</span>
-                  </div>
-                </div>
-                
-                <div className="stat-summary">
-                  <FiStar className="stat-icon stat-icon-rating" />
-                  <div className="stat-content">
-                    <span className="stat-number">{employee.rating}</span>
-                    <span className="stat-label">Avaliação</span>
-                  </div>
-                </div>
-                
-                <div className="stat-summary">
-                  <FiZap className="stat-icon stat-icon-efficiency" />
-                  <div className="stat-content">
-                    <span className="stat-number">{employee.efficiencyScore}%</span>
-                    <span className="stat-label">Eficiência</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+            </section>
           </div>
+
+          {/* Sidebar */}
+          <div className="space-y-8">
+            
+            {/* Performance Card */}
+            <section className="bg-slate-900 rounded-3xl shadow-xl p-8 text-white relative overflow-hidden">
+              <div className="relative z-10">
+                <h3 className="text-lg font-bold mb-6">Desempenho Semanal</h3>
+                <div className="space-y-6">
+                  {[
+                    { label: 'Economia de Combustível', value: 85 },
+                    { label: 'Segurança na Direção', value: 92 },
+                    { label: 'Tempo em Rota', value: 78 },
+                  ].map((item, i) => (
+                    <div key={i} className="space-y-2">
+                      <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-slate-400">
+                        <span>{item.label}</span>
+                        <span>{item.value}%</span>
+                      </div>
+                      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: `${item.value}%` }}
+                          transition={{ duration: 1, delay: i * 0.2 }}
+                          className="h-full bg-indigo-500 rounded-full"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-8 pt-8 border-t border-white/10">
+                  <div className="flex items-center gap-3 text-sm text-indigo-300">
+                    <AlertCircle size={18} />
+                    <span>Você está no TOP 5% da frota este mês!</span>
+                  </div>
+                </div>
+              </div>
+              {/* Decorative Background */}
+              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-indigo-600/20 rounded-full blur-3xl"></div>
+            </section>
+
+            {/* Achievements */}
+            <section className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8">
+              <h3 className="text-lg font-bold text-slate-900 mb-6">Conquistas</h3>
+              <div className="grid grid-cols-3 gap-4">
+                {[
+                  { icon: '🏆', label: 'Expert' },
+                  { icon: '🌱', label: 'Eco' },
+                  { icon: '⏱️', label: 'Fast' },
+                  { icon: '🛡️', label: 'Safe' },
+                  { icon: '🌙', label: 'Night' },
+                  { icon: '🤝', label: 'Team' },
+                ].map((badge, i) => (
+                  <div key={i} className="flex flex-col items-center gap-2">
+                    <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-slate-100">
+                      {badge.icon}
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{badge.label}</span>
+                  </div>
+                ))}
+              </div>
+              <button className="w-full mt-8 py-3 bg-slate-50 text-slate-600 font-bold rounded-xl hover:bg-slate-100 transition-all text-sm">
+                Ver Todas as Medalhas
+              </button>
+            </section>
+          </div>
+
         </div>
       </div>
     </div>
